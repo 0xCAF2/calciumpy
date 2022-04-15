@@ -325,7 +325,10 @@ class GlobalScope(Namespace):
             return super().lookup(name)
         except:
             try:
-                return __builtins__[name]
+                if isinstance(__builtins__, dict):
+                    return __builtins__[name]
+                else:
+                    return getattr(__builtins__, name)
             except KeyError:
                 raise NameError(name)
             except:
