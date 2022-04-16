@@ -143,6 +143,8 @@ KEYWORD_RETURN = "return"
 
 KEYWORD_CLASS = "class"
 
+KEYWORD_IMPORT = "import"
+
 KEYWORD_EXPR_STMT = "expr"
 
 KEYWORD_TRY = "try"
@@ -184,6 +186,8 @@ INDEX_RETURN_VALUE = 3
 
 INDEX_CLASS_NAME = 3
 INDEX_CLASS_SUPERCLASS = 4
+
+INDEX_IMPORT_NAME = 3
 
 INDEX_EXPR_STMT = 3
 
@@ -799,6 +803,19 @@ class Class:
         block.will_enter(env)
 
 
+class Import:
+    def __init__(self, name):
+        self.name = name
+
+    def execute(self, env):
+        module_names = self.name.split(".")
+        for name in module_names:
+            if not name.isalnum():
+                raise InvalidModuleName()
+        exec("import {}".format(self.name))
+        env.context.register(module_names[0], eval("{}".format(module_names[0])))
+
+
 class ExprStmt:
     def __init__(self, value):
         self.value = value
@@ -921,6 +938,12 @@ class Parser:
             return Class(name, superclass)
 
         table[KEYWORD_CLASS] = _class_def
+
+        def _import(line):
+            name = line[INDEX_IMPORT_NAME]
+            return Import(name)
+
+        table[KEYWORD_IMPORT] = _import
 
         def _expr_stmt(line):
             value = self.read_expr(line[INDEX_EXPR_STMT])
@@ -1050,6 +1073,10 @@ class InvalidContinue(Exception):
 
 
 class InvalidEnd(Exception):
+    pass
+
+
+class InvalidModuleName(Exception):
     pass
 
 

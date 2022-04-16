@@ -31,6 +31,7 @@ KEYWORD_FOR = "for"
 KEYWORD_FUNC_DEF = "def"
 KEYWORD_IF = "if"
 KEYWORD_IFS = "ifs"
+KEYWORD_IMPORT = "import"
 KEYWORD_PASS = "pass"
 KEYWORD_RAISE = "raise"
 KEYWORD_RETURN = "return"
@@ -159,6 +160,9 @@ class Python2CalciumVisitor(ast.NodeVisitor):
         for stmt in node.body:
             self.visit(stmt)
         self.output_end_of_code()
+
+    def visit_Import(self, node):
+        self.output_node(node, KEYWORD_IMPORT, [node.names[0].name])
 
     def visit_FunctionDef(self, node):
         elems = [node.name, [arg.arg for arg in node.args.args]]
