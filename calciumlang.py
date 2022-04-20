@@ -4,7 +4,7 @@ import json
 class Runtime:
     def __init__(self, code_list):
         if isinstance(code_list, str):
-            code_list = json.load(code_list)
+            code_list = json.loads(code_list)
         self.env = Environment(code_list)
         self.breakpoints = set()
         self.parser = Parser()
@@ -158,8 +158,6 @@ KEYWORD_CALL = "call"
 
 KEYWORD_COMMA = ","
 KEYWORD_KWARG = "kwarg"
-KEYWORD_SET = "set"
-KEYWORD_SLICE = "slice"
 KEYWORD_TUPLE = "tuple"
 
 KEYWORD_COMMENT = "#"
@@ -370,7 +368,7 @@ class Attribute:
         return target
 
     def _lookup(self, env):
-        if isinstance(self.obj, Variable):
+        if isinstance(self.obj, Variable) or isinstance(self.obj, Attribute):
             return self.obj.evaluate(env)
         else:
             return self.obj
@@ -869,7 +867,7 @@ class Parser:
         def _compound_multiplicate(line):
             return _make_compound_assign(KEYWORD_MULTIPLICATE, line)
 
-        table[KEYWORD_MULTIPLICATE] = _compound_multiplicate
+        table[KEYWORD_COMPOUND_MULTIPLICATE] = _compound_multiplicate
 
         def _ifs(line):
             return Ifs()
