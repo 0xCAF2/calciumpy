@@ -1001,7 +1001,9 @@ class Parser:
                     self.read_expr(elem) for elem in obj[INDEX_EXPRESSION_KEYWORD + 1 :]
                 )
             elif kw == KEYWORD_KWARG:
-                return KeywordArg(obj[INDEX_KWARG_KEYWORD], obj[INDEX_KWARG_VALUE])
+                return KeywordArg(
+                    obj[INDEX_KWARG_KEYWORD], self.read_expr(obj[INDEX_KWARG_VALUE])
+                )
             elif kw == KEYWORD_NOT or kw == KEYWORD_NEGATIVE or kw == KEYWORD_BIT_NOT:
                 operand = self.read_expr(obj[INDEX_UNARY_OPERAND])
                 unary_op = UnaryOperation(kw, operand)
