@@ -23,6 +23,8 @@ def run_calcium(filepath):
 if __name__ == "__main__":
     suite = unittest.TestSuite()
     for filename in os.listdir(dir_name):
+        if not filename.endswith(".py"):
+            continue
         testname = filename[:-3]
         filepath = os.path.join(os.getcwd(), dir_name, filename)
 
