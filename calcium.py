@@ -1,10 +1,10 @@
-# Used for py3ca.py
+# Used for python2calcium.py
 class Engine:
     def __init__(self, code_list):
         self.env = Environment(code_list)
         self.breakpoints = []
         self.parser = Parser()
-    
+
     def run(self):
         while True:
             result = self.step()
@@ -14,7 +14,7 @@ class Engine:
                 return False
             elif result == RESULT_TERMINATED:
                 return True
-    
+
     def step(self):
         last_index = len(self.env.code)
         last_index -= 1
@@ -35,7 +35,7 @@ class Engine:
             is_end_of_code = isinstance(command, EndOfCode)
             if is_end_of_code:
                 return RESULT_TERMINATED
-            
+
             self.env.skip_to_next_line()
             next_line = self.env.code[self.env.address.line]
             keyword = next_line[INDEX_KEYWORD]
@@ -45,85 +45,86 @@ class Engine:
                 self.env.skip_to_next_line()
                 next_line = self.env.code[self.env.address.line]
                 keyword = next_line[INDEX_KEYWORD]
-            
+
             if self.env.address.line in self.breakpoints:
                 return RESULT_BREAKPOINT
             else:
                 return RESULT_EXECUTED
-                
+
+
 # Keyword
-KEYWORD_ASSIGNMENT = '='
-KEYWORD_ADDITION = '+'
-KEYWORD_SUBTRACTION = '-'
-KEYWORD_MULTIPLICATION = '*'
-KEYWORD_EXPONENTIATION = '**'
-KEYWORD_DIVISION = '/'
-KEYWORD_FLOOR_DIVISION = '//'
-KEYWORD_REMAINDER = '%'
+KEYWORD_ASSIGNMENT = "="
+KEYWORD_ADDITION = "+"
+KEYWORD_SUBTRACTION = "-"
+KEYWORD_MULTIPLICATION = "*"
+KEYWORD_EXPONENTIATION = "**"
+KEYWORD_DIVISION = "/"
+KEYWORD_FLOOR_DIVISION = "//"
+KEYWORD_REMAINDER = "%"
 
-KEYWORD_COMPOUND_ADDITION = '+='
-KEYWORD_COMPOUND_SUBTRACTION = '-='
-KEYWORD_COMPOUND_MULTIPLICATION = '*='
+KEYWORD_COMPOUND_ADDITION = "+="
+KEYWORD_COMPOUND_SUBTRACTION = "-="
+KEYWORD_COMPOUND_MULTIPLICATION = "*="
 
-KEYWORD_EQUAL = '=='
-KEYWORD_NOT_EQUAL = '!='
-KEYWORD_LESS_THAN = '<'
-KEYWORD_LESS_THAN_OR_EQUAL = '<='
-KEYWORD_GREATER_THAN = '>'
-KEYWORD_GREATER_THAN_OR_EQUAL = '>='
-KEYWORD_AND = 'and'
-KEYWORD_OR = 'or'
-KEYWORD_IS = 'is'
-KEYWORD_IS_NOT = 'is not'
-KEYWORD_IN = 'in'
-KEYWORD_NOT_IN = 'not in'
+KEYWORD_EQUAL = "=="
+KEYWORD_NOT_EQUAL = "!="
+KEYWORD_LESS_THAN = "<"
+KEYWORD_LESS_THAN_OR_EQUAL = "<="
+KEYWORD_GREATER_THAN = ">"
+KEYWORD_GREATER_THAN_OR_EQUAL = ">="
+KEYWORD_AND = "and"
+KEYWORD_OR = "or"
+KEYWORD_IS = "is"
+KEYWORD_IS_NOT = "is not"
+KEYWORD_IN = "in"
+KEYWORD_NOT_IN = "not in"
 
-KEYWORD_BIT_AND = '&'
-KEYWORD_BIT_OR = '|'
-KEYWORD_BIT_XOR = '^'
-KEYWORD_LEFT_SHIFT = '<<'
-KEYWORD_RIGHT_SHIFT = '>>'
+KEYWORD_BIT_AND = "&"
+KEYWORD_BIT_OR = "|"
+KEYWORD_BIT_XOR = "^"
+KEYWORD_LEFT_SHIFT = "<<"
+KEYWORD_RIGHT_SHIFT = ">>"
 
-KEYWORD_NOT = 'not'
-KEYWORD_NEGATIVE = '-_'
-KEYWORD_BIT_NOT = '~'
+KEYWORD_NOT = "not"
+KEYWORD_NEGATIVE = "-_"
+KEYWORD_BIT_NOT = "~"
 
-KEYWORD_IFS = 'ifs'
-KEYWORD_IF = 'if'
-KEYWORD_ELIF = 'elif'
-KEYWORD_ELSE = 'else'
+KEYWORD_IFS = "ifs"
+KEYWORD_IF = "if"
+KEYWORD_ELIF = "elif"
+KEYWORD_ELSE = "else"
 
-KEYWORD_FOR_RANGE = 'for range'
-KEYWORD_FOR_EACH = 'for each'
-KEYWORD_WHILE = 'while'
-KEYWORD_BREAK = 'break'
-KEYWORD_CONTINUE = 'continue'
+KEYWORD_FOR_RANGE = "for range"
+KEYWORD_FOR_EACH = "for each"
+KEYWORD_WHILE = "while"
+KEYWORD_BREAK = "break"
+KEYWORD_CONTINUE = "continue"
 
-KEYWORD_FUNC_DEF = 'def'
-KEYWORD_CALL = 'call'
-KEYWORD_RETURN = 'return'
+KEYWORD_FUNC_DEF = "def"
+KEYWORD_CALL = "call"
+KEYWORD_RETURN = "return"
 
-KEYWORD_CLASS_DEF = 'class'
+KEYWORD_CLASS_DEF = "class"
 
-KEYWORD_TRY = 'try'
-KEYWORD_EXCEPT = 'except'
-KEYWORD_RAISE = 'raise'
+KEYWORD_TRY = "try"
+KEYWORD_EXCEPT = "except"
+KEYWORD_RAISE = "raise"
 
-KEYWORD_VARIABLE = 'var'
-KEYWORD_ATTRIBUTE = 'attr'
-KEYWORD_SUBSCRIPT = 'sub'
+KEYWORD_VARIABLE = "var"
+KEYWORD_ATTRIBUTE = "attr"
+KEYWORD_SUBSCRIPT = "sub"
 
-KEYWORD_COMMENT = '#'
-KEYWORD_PASS = 'pass'
-KEYWORD_END_OF_CODE = 'end'
+KEYWORD_COMMENT = "#"
+KEYWORD_PASS = "pass"
+KEYWORD_END_OF_CODE = "end"
 
 # Index
 INDEX_INDENT = 0
 INDEX_OPTIONS = 1
 INDEX_KEYWORD = 2
 
-INDEX_ASSIGNMENT_LHS = 3 # Left Hand Side
-INDEX_ASSIGNMENT_RHS = 4 # Right Hand Side
+INDEX_ASSIGNMENT_LHS = 3  # Left Hand Side
+INDEX_ASSIGNMENT_RHS = 4  # Right Hand Side
 
 INDEX_CONDITION = 3
 
@@ -138,7 +139,7 @@ INDEX_FUNC_DEF_PARAMETERS = 4
 
 INDEX_CALL_LHS = 3
 INDEX_CALL_REFERENCE = 4
-INDEX_CALL_ARGS = 5 # Arguments
+INDEX_CALL_ARGS = 5  # Arguments
 
 INDEX_RETURN_VALUE = 3
 
@@ -171,14 +172,17 @@ RESULT_TERMINATED = 0
 RESULT_EXECUTED = 1
 RESULT_BREAKPOINT = 2
 
+
 class Address:
     def __init__(self, indent, line):
         self.indent = indent
         self.line = line
 
+
 def _copy_address(point):
     address = Address(point.indent, point.line)
     return address
+
 
 # BlockKind
 BLOCK_KIND_IFS = 0
@@ -191,6 +195,7 @@ BLOCK_KIND_CLASS_DEF = 6
 BLOCK_KIND_TRY = 7
 BLOCK_KIND_EXCEPT = 8
 
+
 class Block:
     def __init__(self, kind, address, begin, end):
         self.kind = kind
@@ -198,33 +203,39 @@ class Block:
         self.begin = begin
         self.end = end
 
+
 class Namespace:
     def __init__(self, nesting_scope, dictobj):
-        self.nesting_scope = nesting_scope # None is allowed
+        self.nesting_scope = nesting_scope  # None is allowed
         self.dictobj = dictobj
-    
+
     def register(self, name, obj):
         self.dictobj[name] = obj
-    
+
     def lookup(self, name):
         if name in self.dictobj:
             return self.dictobj[name]
         else:
             raise NameNotFoundError(name)
 
+
 class GlobalScope(Namespace):
     pass
 
+
 class FuncScope(Namespace):
     pass
+
 
 class ClassScope(Namespace):
     def get_attr(self):
         return self.dictobj
 
+
 class Inaccessible:
     def evaluate(self, env):
         return self
+
 
 class BuiltinFuncObj(Inaccessible):
     def __init__(self, name, body):
@@ -232,9 +243,11 @@ class BuiltinFuncObj(Inaccessible):
         self.body = body
         self.selfclass = builtin_type.builtin_function_or_method
 
+
 class Accessible:
     def evaluate(self, env):
         return self
+
 
 class FuncObj(Accessible):
     def __init__(self, name, params, nesting_scope, address):
@@ -244,13 +257,14 @@ class FuncObj(Accessible):
         self.address = _copy_address(address)
         self.attributes = {}
         self.selfclass = builtin_type.function
-    
+
     def get_attr(self, name):
         return self.attributes[name]
-    
+
     def set_attr(self, name, value):
         self.attributes[name] = value
         return True
+
 
 class MethodObj(Inaccessible):
     def __init__(self, instance, funcobj):
@@ -258,34 +272,36 @@ class MethodObj(Inaccessible):
         self.funcobj = funcobj
         self.selfclass = builtin_type.instance_method
 
+
 class ClassObj(Accessible):
     def __init__(self, name, superclass, attributes):
         self.name = name
-        self.superclass= superclass
+        self.superclass = superclass
         self.attributes = attributes
-    
+
     def get_attr(self, name):
         if name in self.attributes:
             return self.attributes[name]
         else:
             attr = self.superclass.get_attr(name)
             return attr
-    
+
     def set_attr(self, name, value):
         if self.attributes != None:
             self.attributes[name] = value
             return True
         else:
             return False
-    
+
     def get_description(self):
-        return '<class ' + self.name + '>'
+        return "<class " + self.name + ">"
+
 
 class Instance(Accessible):
     def __init__(self, selfclass):
-        self.selfclass= selfclass
+        self.selfclass = selfclass
         self.attributes = {}
-    
+
     def get_attr(self, name):
         try:
             attr = self.attributes[name]
@@ -298,10 +314,11 @@ class Instance(Accessible):
                 return methodobj
             else:
                 return classattr
-    
+
     def set_attr(self, name, value):
         self.attributes[name] = value
         return True
+
 
 class Super(Accessible):
     def __init__(self, classobj, instance):
@@ -321,34 +338,36 @@ class Super(Accessible):
                 superclass = currentclass.superclass
                 if superclass == None:
                     raise SuperCallFailedError()
-                
+
                 funcobj = superclass.get_attr(name)
                 is_funcobj = isinstance(funcobj, FuncObj)
                 if funcobj == None or not is_funcobj:
                     raise SuperCallFailedError()
-                
+
                 methodobj = MethodObj(self.instance, funcobj)
                 return methodobj
-    
+
     def set_attr(self, name, value):
         return False
+
 
 class Variable:
     def __init__(self, name):
         self.name = name
-    
+
     def assign(self, obj, env):
         env.register(self.name, obj)
 
     def evaluate(self, env):
         value = env.lookup(self.name)
         return value
-    
+
+
 class Attribute:
     def __init__(self, objname, propertynames):
         self.objname = objname
         self.propertynames = propertynames
-    
+
     def assign(self, value, env):
         instance = env.lookup(self.objname)
         target = instance
@@ -356,7 +375,7 @@ class Attribute:
         for i in range(length - 1):
             target = _get_attribute(target, self.propertynames[i])
         target.set_attr(self.propertynames[length - 1], value)
-    
+
     def evaluate(self, env):
         instance = env.lookup(self.objname)
         try:
@@ -367,11 +386,12 @@ class Attribute:
         except:
             raise AttributeNotExistError(prop)
 
+
 class Subscript:
     def __init__(self, objref, indexexpr):
         self.objref = objref
         self.indexexpr = indexexpr
-    
+
     def assign(self, value, env):
         obj = self.lookup(env)
         is_str = isinstance(obj, str)
@@ -380,7 +400,7 @@ class Subscript:
 
         index = env.evaluate(self.indexexpr)
         obj[index] = value
-    
+
     def evaluate(self, env):
         obj = self.lookup(env)
         index = env.evaluate(self.indexexpr)
@@ -389,7 +409,7 @@ class Subscript:
             return value
         except:
             raise ValueNotFoundError()
-    
+
     def lookup(self, env):
         obj = env.evaluate(self.objref)
         is_list = isinstance(obj, list)
@@ -400,24 +420,27 @@ class Subscript:
         else:
             raise SubscriptNotAllowedError()
 
+
 class BuiltinType:
     def __init__(self):
-        self.object = ClassObj('object', None, None)
-        self.function = ClassObj('function', self.object, None)
-        self.instance_method = ClassObj(
-            'instancemethod', self.object, None)
-        self.super = ClassObj('super', self.object, None)
+        self.object = ClassObj("object", None, None)
+        self.function = ClassObj("function", self.object, None)
+        self.instance_method = ClassObj("instancemethod", self.object, None)
+        self.super = ClassObj("super", self.object, None)
         self.builtin_function_or_method = ClassObj(
-            'builtin_function_or_method', self.object, None)
+            "builtin_function_or_method", self.object, None
+        )
+
 
 builtin_type = BuiltinType()
+
 
 class BinaryOperation:
     def __init__(self, operator, left, right):
         self.operator = operator
         self.left = left
         self.right = right
-    
+
     def operate(self, env):
         l = env.evaluate(self.left)
         r = env.evaluate(self.right)
@@ -430,7 +453,7 @@ class BinaryOperation:
             elif op == KEYWORD_MULTIPLICATION:
                 return l * r
             elif op == KEYWORD_EXPONENTIATION:
-                return l ** r
+                return l**r
             elif op == KEYWORD_DIVISION:
                 return l / r
             elif op == KEYWORD_FLOOR_DIVISION:
@@ -476,11 +499,12 @@ class BinaryOperation:
         except:
             raise InvalidOperationError()
 
+
 class UnaryOperation:
     def __init__(self, operator, operand):
         self.operator = operator
         self.operand = operand
-    
+
     def operate(self, env):
         v = env.evaluate(self.operator)
         op = self.operator
@@ -496,25 +520,30 @@ class UnaryOperation:
         except:
             raise InvalidOperationError()
 
+
 method_names = {
-    'append': {},
-    'pop': {},
-    'insert': {},
-    'find': {},
-    'replace': {},
-    'keys': {}
+    "append": {},
+    "pop": {},
+    "insert": {},
+    "find": {},
+    "replace": {},
+    "keys": {},
 }
+
 
 def _get_attribute(obj, name):
     is_list = isinstance(obj, list)
     if is_list:
-        if name == 'append' or name in method_names['append']:
+        if name == "append" or name in method_names["append"]:
+
             def append(args, env):
                 elem = env.evaluate(args[0])
                 obj.append(elem)
+
             builtin_append = BuiltinFuncObj(name, append)
             return builtin_append
-        elif name == 'pop' or name in method_names['pop']:
+        elif name == "pop" or name in method_names["pop"]:
+
             def pop(args, env):
                 length = len(args)
                 try:
@@ -526,44 +555,53 @@ def _get_attribute(obj, name):
                     return value
                 except:
                     raise CannotPopFromListError()
+
             builtin_pop = BuiltinFuncObj(name, pop)
             return builtin_pop
-        elif name == 'insert' or name in method_names['insert']:
+        elif name == "insert" or name in method_names["insert"]:
+
             def insert(args, env):
                 index = env.evaluate(args[0])
                 elem = env.evaluate(args[1])
                 obj.insert(index, elem)
+
             builtin_insert = BuiltinFuncObj(name, insert)
             return builtin_insert
         else:
             raise MethodNotFoundError(name)
-    
+
     is_str = isinstance(obj, str)
     if is_str:
-        if name == 'find' or name in method_names['find']:
+        if name == "find" or name in method_names["find"]:
+
             def find(args, env):
                 substr = env.evaluate(args[0])
                 result = obj.find(substr)
                 return result
+
             builtin_find = BuiltinFuncObj(name, find)
             return builtin_find
-        elif name == 'replace' or name in method_names['replace']:
+        elif name == "replace" or name in method_names["replace"]:
+
             def replace(args, env):
                 from_str = env.evaluate(args[0])
                 to_str = env.evaluate(args[1])
                 new_str = obj.replace(from_str, to_str)
                 return new_str
+
             builtin_replace = BuiltinFuncObj(name, replace)
             return builtin_replace
         else:
             raise MethodNotFoundError(name)
-    
+
     is_dict = isinstance(obj, dict)
     if is_dict:
-        if name == 'keys' or name in method_names['keys']:
+        if name == "keys" or name in method_names["keys"]:
+
             def keys(args, env):
                 keys_list = obj.keys()
                 return keys_list
+
             builtin_keys = BuiltinFuncObj(name, keys)
             return builtin_keys
         else:
@@ -573,24 +611,26 @@ def _get_attribute(obj, name):
     attr = obj.get_attr(name)
     return attr
 
+
 # Built-in function's name
-BUILTIN_FUNC_NAME_PRINT = 'print'
-BUILTIN_FUNC_NAME_DICT = 'dict'
-BUILTIN_FUNC_NAME_INT = 'int'
-BUILTIN_FUNC_NAME_LEN = 'len'
-BUILTIN_FUNC_NAME_LIST = 'list'
-BUILTIN_FUNC_NAME_STR = 'str'
-BUILTIN_FUNC_NAME_SUPER = 'super'
-BUILTIN_FUNC_NAME_HASATTR = 'hasattr'
-BUILTIN_FUNC_NAME_ISINSTANCE = 'isinstance'
-BUILTIN_FUNC_NAME_ISSUBCLASS = 'issubclass'
+BUILTIN_FUNC_NAME_PRINT = "print"
+BUILTIN_FUNC_NAME_DICT = "dict"
+BUILTIN_FUNC_NAME_INT = "int"
+BUILTIN_FUNC_NAME_LEN = "len"
+BUILTIN_FUNC_NAME_LIST = "list"
+BUILTIN_FUNC_NAME_STR = "str"
+BUILTIN_FUNC_NAME_SUPER = "super"
+BUILTIN_FUNC_NAME_HASATTR = "hasattr"
+BUILTIN_FUNC_NAME_ISINSTANCE = "isinstance"
+BUILTIN_FUNC_NAME_ISSUBCLASS = "issubclass"
+
 
 class Environment:
     def __init__(self, codelist):
         self.code = codelist
         self.global_context = GlobalScope(None, {})
         self.context = self.global_context
-        self.address = Address(1, 0) # (indent, line)
+        self.address = Address(1, 0)  # (indent, line)
         self.callstack = []
         self.returned_value = None
         self.blocks = []
@@ -601,6 +641,7 @@ class Environment:
 
         def _dict(args, env):
             return {}
+
         builtin_dict = BuiltinFuncObj(BUILTIN_FUNC_NAME_DICT, _dict)
         self.global_context.register(BUILTIN_FUNC_NAME_DICT, builtin_dict)
 
@@ -609,10 +650,9 @@ class Environment:
             attr_name = env.evaluate(args[1])
             has_attr = hasattr(obj, attr_name)
             return has_attr
-        builtin_hasattr = BuiltinFuncObj(
-            BUILTIN_FUNC_NAME_HASATTR, _hasattr)
-        self.global_context.register(
-            BUILTIN_FUNC_NAME_HASATTR, builtin_hasattr)
+
+        builtin_hasattr = BuiltinFuncObj(BUILTIN_FUNC_NAME_HASATTR, _hasattr)
+        self.global_context.register(BUILTIN_FUNC_NAME_HASATTR, builtin_hasattr)
 
         def _int(args, env):
             value = env.evaluate(args[0])
@@ -621,6 +661,7 @@ class Environment:
                 return num
             except:
                 raise CannotParseInt()
+
         builtin_int = BuiltinFuncObj(BUILTIN_FUNC_NAME_INT, _int)
         self.global_context.register(BUILTIN_FUNC_NAME_INT, builtin_int)
 
@@ -655,20 +696,18 @@ class Environment:
                         return False
                 else:
                     return False
-        builtin_isinstance = BuiltinFuncObj(
-            BUILTIN_FUNC_NAME_ISINSTANCE, _isinstance)
-        self.global_context.register(
-            BUILTIN_FUNC_NAME_ISINSTANCE, builtin_isinstance)
-        
+
+        builtin_isinstance = BuiltinFuncObj(BUILTIN_FUNC_NAME_ISINSTANCE, _isinstance)
+        self.global_context.register(BUILTIN_FUNC_NAME_ISINSTANCE, builtin_isinstance)
+
         def _issubclass(args, env):
             classtype = env.evaluate(args[0])
             superclass = env.evaluate(args[1])
             is_subclass = issubclass(classtype, superclass)
             return is_subclass
-        builtin_issubclass = BuiltinFuncObj(
-            BUILTIN_FUNC_NAME_ISSUBCLASS, _issubclass)
-        self.global_context.register(
-            BUILTIN_FUNC_NAME_ISSUBCLASS, builtin_issubclass)
+
+        builtin_issubclass = BuiltinFuncObj(BUILTIN_FUNC_NAME_ISSUBCLASS, _issubclass)
+        self.global_context.register(BUILTIN_FUNC_NAME_ISSUBCLASS, builtin_issubclass)
 
         def _len(args, env):
             value = env.evaluate(args[0])
@@ -677,6 +716,7 @@ class Environment:
                 return length
             except:
                 raise NotIterableError()
+
         builtin_len = BuiltinFuncObj(BUILTIN_FUNC_NAME_LEN, _len)
         self.global_context.register(BUILTIN_FUNC_NAME_LEN, builtin_len)
 
@@ -687,11 +727,12 @@ class Environment:
                 return new_list
             except:
                 raise NotIterableError()
+
         builtin_list = BuiltinFuncObj(BUILTIN_FUNC_NAME_LIST, _list)
         self.global_context.register(BUILTIN_FUNC_NAME_LIST, builtin_list)
 
         def _print(args, env):
-            description = ''
+            description = ""
             length = len(args)
             count = 0
             for arg in args:
@@ -699,9 +740,10 @@ class Environment:
                 desc = _get_description(value)
                 description += desc
                 if count < length - 1:
-                    description += ' '
+                    description += " "
             self.builtin_print(description)
             return None
+
         builtin_print = BuiltinFuncObj(BUILTIN_FUNC_NAME_PRINT, _print)
         self.global_context.register(BUILTIN_FUNC_NAME_PRINT, builtin_print)
 
@@ -709,6 +751,7 @@ class Environment:
             value = env.evaluate(args[0])
             new_str = str(value)
             return new_str
+
         builtin_str = BuiltinFuncObj(BUILTIN_FUNC_NAME_STR, _str)
         self.global_context.register(BUILTIN_FUNC_NAME_STR, builtin_str)
 
@@ -726,32 +769,36 @@ class Environment:
                     raise Exception()
             except:
                 raise InvalidArgumentsForSuperError()
+
         builtin_super = BuiltinFuncObj(BUILTIN_FUNC_NAME_SUPER, _super)
         self.global_context.register(BUILTIN_FUNC_NAME_SUPER, builtin_super)
-    
+
     def begin_block(self, block):
         self.address = _copy_address(block.address)
         should_begin = block.begin(self)
         if should_begin:
             self.shift_indent(1)
             self.blocks.append(block)
-    
+
     def end_block(self):
         block = self.pop_block()
         block.end(self)
 
-        if block.kind == BLOCK_KIND_IFS \
-            or block.kind == BLOCK_KIND_CLASS_DEF \
-            or block.kind == BLOCK_KIND_TRY \
-            or block.kind == BLOCK_KIND_EXCEPT:
+        if (
+            block.kind == BLOCK_KIND_IFS
+            or block.kind == BLOCK_KIND_CLASS_DEF
+            or block.kind == BLOCK_KIND_TRY
+            or block.kind == BLOCK_KIND_EXCEPT
+        ):
             return False
-        elif block.kind == BLOCK_KIND_IF_ELIF_ELSE \
-            or block.kind == BLOCK_KIND_FUNC_CALL:
+        elif (
+            block.kind == BLOCK_KIND_IF_ELIF_ELSE or block.kind == BLOCK_KIND_FUNC_CALL
+        ):
             return True
         else:
             self.begin_block(block)
             return True
-    
+
     def evaluate(self, expr):
         is_variable = isinstance(expr, Variable)
         is_attribute = isinstance(expr, Attribute)
@@ -777,19 +824,19 @@ class Environment:
         is_accessible = isinstance(expr, Accessible)
         if is_accessible:
             return expr
-        
+
         is_dict = isinstance(expr, dict)
         if is_dict:
             evaluated_dict = {}
             for key in expr:
                 evaluated_dict[key] = self.evaluate(expr[key])
             return evaluated_dict
-        
+
         return expr
-    
+
     def jump_to(self, address):
         self.address = _copy_address(address)
-    
+
     def lookup(self, name):
         current_scope = self.context
         while True:
@@ -802,22 +849,22 @@ class Environment:
                     raise NameNotFoundError(name)
                 else:
                     continue
-    
+
     def pop_block(self):
         b = self.blocks.pop()
         return b
-    
+
     def pop_stack(self):
         previous_context = self.callstack.pop()
         self.context = previous_context
-    
+
     def push_stack(self, new_context):
         self.callstack.append(self.context)
         self.context = new_context
-    
+
     def register(self, name, obj):
         self.context.register(name, obj)
-    
+
     def retrieve_nesting_scope(self):
         current_scope = self.context
         while True:
@@ -827,10 +874,10 @@ class Environment:
                 continue
             else:
                 return current_scope
-    
+
     def shift_indent(self, delta):
         self.address.indent += delta
-    
+
     def skip_to_next_line(self):
         next_line_index = self.address.line + 1
         while True:
@@ -849,64 +896,75 @@ class Environment:
 
     def step_line(self, delta):
         self.address.line += delta
-    
+
     def switch_context(self, next_context):
         self.context = next_context
-        
+
+
 def _get_description(value):
     desc = str(value)
     return desc
+
 
 # Commands
 class Assignment:
     def __init__(self, lhs, rhs):
         self.lhs = lhs
         self.rhs = rhs
-    
+
     def execute(self, env):
         value = env.evaluate(self.rhs)
         self.lhs.assign(value, env)
+
 
 class Ifs:
     def execute(self, env):
         def begin(env):
             return True
+
         def end(env):
             env.shift_indent(-1)
+
         block = Block(BLOCK_KIND_IFS, env.address, begin, end)
         env.begin_block(block)
+
 
 def _execute_conditional_block(env):
     def begin(env):
         return True
+
     def end(env):
         env.shift_indent(-2)
         env.pop_block()
-    block = Block(
-        BLOCK_KIND_IF_ELIF_ELSE, env.address, begin, end)
+
+    block = Block(BLOCK_KIND_IF_ELIF_ELSE, env.address, begin, end)
     env.begin_block(block)
+
 
 class If:
     def __init__(self, condition):
         self.condition = condition
-    
+
     def execute(self, env):
         is_satisfied = env.evaluate(self.condition)
         if is_satisfied:
             _execute_conditional_block(env)
+
 
 class Elif:
     def __init__(self, condition):
         self.condition = condition
-    
+
     def execute(self, env):
         is_satisfied = env.evaluate(self.condition)
         if is_satisfied:
             _execute_conditional_block(env)
 
+
 class Else:
     def execute(self, env):
         _execute_conditional_block(env)
+
 
 class LoopCounter:
     def __init__(self, start, stop, step):
@@ -914,10 +972,14 @@ class LoopCounter:
         self.stop = stop
         self.step = step
         self.now = None
-    
+
     def next(self):
-        if self.step > 0 and self.start >= self.stop \
-            or self.step < 0 and self.start <= self.stop:
+        if (
+            self.step > 0
+            and self.start >= self.stop
+            or self.step < 0
+            and self.start <= self.stop
+        ):
             return None
         elif self.now == None:
             self.now = self.start
@@ -937,13 +999,14 @@ class LoopCounter:
             else:
                 return None
 
+
 class ForRange:
     def __init__(self, varname, start, stop, step):
         self.varname = varname
         self.start = start
         self.stop = stop
         self.step = step
-    
+
     def execute(self, env):
         stop_value = env.evaluate(self.stop)
         if self.start == None and self.step == None:
@@ -958,7 +1021,7 @@ class ForRange:
             start_value = env.evaluate(self.start)
             step_value = env.evaluate(self.step)
             loopcounter = LoopCounter(start_value, stop_value, step_value)
-        
+
         def begin(env):
             next_value = loopcounter.next()
             if next_value != None:
@@ -966,17 +1029,19 @@ class ForRange:
                 return True
             else:
                 return False
+
         def end(env):
             pass
-        block = Block(
-            BLOCK_KIND_FOR_RANGE, env.address, begin, end)
+
+        block = Block(BLOCK_KIND_FOR_RANGE, env.address, begin, end)
         env.begin_block(block)
+
 
 class ForEach:
     def __init__(self, elemname, iterable):
         self.elemname = elemname
         self.iterable = iterable
-    
+
     def execute(self, env):
         iterableobj = env.evaluate(self.iterable)
         is_list = isinstance(iterableobj, list)
@@ -988,6 +1053,7 @@ class ForEach:
         if not is_dict:
             length = len(iterableobj)
             loopcounter = LoopCounter(0, length, 1)
+
             def begin(env):
                 next_index = loopcounter.next()
                 if next_index != None:
@@ -995,28 +1061,31 @@ class ForEach:
                     return True
                 else:
                     return False
+
         else:
             keys = iterableobj.keys()
             length = len(keys)
             loopcounter = LoopCounter(0, length, 1)
+
             def begin(env):
                 next_index = loopcounter.next()
                 if next_index != None:
-                    env.register(self.elemname,
-                        iterableobj[keys[next_index]])
+                    env.register(self.elemname, iterableobj[keys[next_index]])
                     return True
                 else:
                     return False
+
         def end(env):
             pass
-        block = Block(
-            BLOCK_KIND_FOR_EACH, env.address, begin, end)
+
+        block = Block(BLOCK_KIND_FOR_EACH, env.address, begin, end)
         env.begin_block(block)
+
 
 class While:
     def __init__(self, condition):
         self.condition = condition
-    
+
     def execute(self, env):
         def begin(env):
             condition_value = env.evaluate(self.condition)
@@ -1024,73 +1093,89 @@ class While:
                 return True
             else:
                 return False
+
         def end(env):
             pass
+
         block = Block(BLOCK_KIND_WHILE, env.address, begin, end)
         env.begin_block(block)
+
 
 class Break:
     def execute(self, env):
         while True:
             block = env.pop_block()
-            if block.kind == BLOCK_KIND_IFS \
-                or block.kind == BLOCK_KIND_IF_ELIF_ELSE \
-                or block.kind == BLOCK_KIND_TRY \
-                or block.kind == BLOCK_KIND_EXCEPT:
+            if (
+                block.kind == BLOCK_KIND_IFS
+                or block.kind == BLOCK_KIND_IF_ELIF_ELSE
+                or block.kind == BLOCK_KIND_TRY
+                or block.kind == BLOCK_KIND_EXCEPT
+            ):
                 env.shift_indent(-1)
                 continue
-            elif block.kind == BLOCK_KIND_WHILE \
-                or block.kind == BLOCK_KIND_FOR_RANGE \
-                or block.kind == BLOCK_KIND_FOR_EACH:
+            elif (
+                block.kind == BLOCK_KIND_WHILE
+                or block.kind == BLOCK_KIND_FOR_RANGE
+                or block.kind == BLOCK_KIND_FOR_EACH
+            ):
                 env.shift_indent(-1)
                 break
             else:
                 raise InvalidBreakError()
 
+
 class Continue:
     def execute(self, env):
         while True:
             block = env.pop_block()
-            if block.kind == BLOCK_KIND_IFS \
-                or block.kind == BLOCK_KIND_IF_ELIF_ELSE \
-                or block.kind == BLOCK_KIND_TRY \
-                or block.kind == BLOCK_KIND_EXCEPT:
+            if (
+                block.kind == BLOCK_KIND_IFS
+                or block.kind == BLOCK_KIND_IF_ELIF_ELSE
+                or block.kind == BLOCK_KIND_TRY
+                or block.kind == BLOCK_KIND_EXCEPT
+            ):
                 env.shift_indent(-1)
                 continue
-            elif block.kind == BLOCK_KIND_WHILE \
-                or block.kind == BLOCK_KIND_FOR_RANGE \
-                or block.kind == BLOCK_KIND_FOR_EACH:
+            elif (
+                block.kind == BLOCK_KIND_WHILE
+                or block.kind == BLOCK_KIND_FOR_RANGE
+                or block.kind == BLOCK_KIND_FOR_EACH
+            ):
                 env.begin_block(block)
                 break
             else:
                 raise InvalidContinueError()
 
+
 class FuncDef:
     def __init__(self, name, params):
         self.name = name
         self.params = params
-    
+
     def execute(self, env):
         defined_address = env.address
         nesting_scope = env.retrieve_nesting_scope()
-        funcobj = FuncObj(self.name, self.params,
-            nesting_scope, defined_address)
+        funcobj = FuncObj(self.name, self.params, nesting_scope, defined_address)
         env.register(self.name, funcobj)
+
 
 def _invoke(calledobj, args, lhs, env):
     funcobj = calledobj
+
     def get_returned_value(env):
         return env.returned_value
 
     is_methodobj = isinstance(calledobj, MethodObj)
     if is_methodobj:
         funcobj = calledobj.funcobj
-        if funcobj.name == '__init__':
+        if funcobj.name == "__init__":
+
             def _get_returned_value(env):
                 return calledobj.instance
+
             get_returned_value = _get_returned_value
-        args.insert(0, calledobj.instance) # insert self
-    
+        args.insert(0, calledobj.instance)  # insert self
+
     caller_address = _copy_address(env.address)
     args_dict = {}
     length = len(args)
@@ -1103,6 +1188,7 @@ def _invoke(calledobj, args, lhs, env):
 
     def begin(env):
         return True
+
     def end(env):
         env.pop_stack()
         if lhs != None:
@@ -1110,17 +1196,17 @@ def _invoke(calledobj, args, lhs, env):
             lhs.assign(returned_value, env)
         env.returned_value = None
         env.jump_to(caller_address)
-    
-    block = Block(BLOCK_KIND_FUNC_CALL,
-        funcobj.address, begin, end)
+
+    block = Block(BLOCK_KIND_FUNC_CALL, funcobj.address, begin, end)
     env.begin_block(block)
+
 
 class Call:
     def __init__(self, lhs, funcref, args):
         self.lhs = lhs
         self.funcref = funcref
         self.args = args
-    
+
     def execute(self, env):
         calledobj = env.evaluate(self.funcref)
         is_funcobj = isinstance(calledobj, FuncObj)
@@ -1136,18 +1222,19 @@ class Call:
         elif is_classtype:
             instance = Instance(calledobj)
             try:
-                init = instance.get_attr('__init__')
+                init = instance.get_attr("__init__")
                 _invoke(init, self.args, self.lhs, env)
             except:
                 self.lhs.assign(instance, env)
-                return # Successful
+                return  # Successful
         else:
             raise CannotInvokeFunctionError()
+
 
 class Return:
     def __init__(self, expression):
         self.expression = expression
-    
+
     def execute(self, env):
         env.returned_value = env.evaluate(self.expression)
         while True:
@@ -1156,67 +1243,75 @@ class Return:
                 if block.kind == BLOCK_KIND_FUNC_CALL:
                     block.end(env)
                     return
-                elif block.kind == BLOCK_KIND_IFS \
-                    or block.kind == BLOCK_KIND_IF_ELIF_ELSE \
-                    or block.kind == BLOCK_KIND_TRY \
-                    or block.kind == BLOCK_KIND_EXCEPT \
-                    or block.kind == BLOCK_KIND_WHILE \
-                    or block.kind == BLOCK_KIND_FOR_RANGE \
-                    or block.kind == BLOCK_KIND_FOR_EACH:
+                elif (
+                    block.kind == BLOCK_KIND_IFS
+                    or block.kind == BLOCK_KIND_IF_ELIF_ELSE
+                    or block.kind == BLOCK_KIND_TRY
+                    or block.kind == BLOCK_KIND_EXCEPT
+                    or block.kind == BLOCK_KIND_WHILE
+                    or block.kind == BLOCK_KIND_FOR_RANGE
+                    or block.kind == BLOCK_KIND_FOR_EACH
+                ):
                     continue
                 else:
                     raise Exception()
             except:
                 raise InvalidReturnError()
 
+
 class ClassDef:
     def __init__(self, classname, superclassname):
         self.classname = classname
         self.superclassname = superclassname
-    
+
     def execute(self, env):
-        if self.superclassname == None \
-            or self.superclassname == builtin_type.object.name:
+        if (
+            self.superclassname == None
+            or self.superclassname == builtin_type.object.name
+        ):
             superclass = builtin_type.object
         else:
             superclass = env.lookup(self.superclassname)
             is_classtype = isinstance(superclass, ClassObj)
             if not is_classtype:
                 raise InvalidSuperclassError()
-        
+
         def begin(env):
             nesting_scope = env.retrieve_nesting_scope()
             new_context = ClassScope(nesting_scope, {})
             env.switch_context(new_context)
             return True
-        
+
         current_context = env.context
+
         def end(env):
             attributes = env.context.dictobj
             env.switch_context(current_context)
-            classtype = ClassObj(
-                self.classname, superclass, attributes)
+            classtype = ClassObj(self.classname, superclass, attributes)
             env.register(self.classname, classtype)
             env.shift_indent(-1)
-        
-        block = Block(
-            BLOCK_KIND_CLASS_DEF, env.address, begin, end)
+
+        block = Block(BLOCK_KIND_CLASS_DEF, env.address, begin, end)
         env.begin_block(block)
+
 
 class Comment:
     def __init__(self, options):
         self.options = options
-    
+
     def execute(self, env):
-        pass # Do nothing
+        pass  # Do nothing
+
 
 class Pass:
     def execute(self, env):
-        pass # Do nothing
+        pass  # Do nothing
+
 
 class EndOfCode:
     def execute(self, env):
-        pass # Do nothing
+        pass  # Do nothing
+
 
 class Parser:
     def __init__(self):
@@ -1227,6 +1322,7 @@ class Parser:
             rhs = self.parse_expr(line[INDEX_ASSIGNMENT_RHS])
             cmd = Assignment(lhs, rhs)
             return cmd
+
         t[KEYWORD_ASSIGNMENT] = _assignment
 
         def _make_compound_assignment(keyword, line):
@@ -1235,50 +1331,58 @@ class Parser:
             op = BinaryOperation(keyword, lhs, rhs)
             cmd = Assignment(lhs, op)
             return cmd
-        
+
         def _compound_addition(line):
             cmd = _make_compound_assignment(KEYWORD_ADDITION, line)
             return cmd
+
         t[KEYWORD_COMPOUND_ADDITION] = _compound_addition
 
         def _compound_subtraction(line):
             cmd = _make_compound_assignment(KEYWORD_SUBTRACTION, line)
             return cmd
+
         t[KEYWORD_COMPOUND_SUBTRACTION] = _compound_subtraction
 
         def _compound_multiplication(line):
             cmd = _make_compound_assignment(KEYWORD_MULTIPLICATION, line)
             return cmd
+
         t[KEYWORD_MULTIPLICATION] = _compound_multiplication
 
         def _ifs(line):
             cmd = Ifs()
             return cmd
+
         t[KEYWORD_IFS] = _ifs
 
         def _if(line):
             condition = self.parse_expr(line[INDEX_CONDITION])
             cmd = If(condition)
             return cmd
+
         t[KEYWORD_IF] = _if
 
         def _elif(line):
             condition = self.parse_expr(line[INDEX_CONDITION])
             cmd = Elif(condition)
             return cmd
+
         t[KEYWORD_ELIF] = _elif
-        
+
         def _else(line):
             cmd = Else()
             return cmd
+
         t[KEYWORD_ELSE] = _else
 
         def _while(line):
             condition = self.parse_expr(line[INDEX_CONDITION])
             cmd = While(condition)
             return cmd
+
         t[KEYWORD_WHILE] = _while
-        
+
         def _for_range(line):
             varname = line[INDEX_FOR_RANGE_VARIABLE_NAME]
             values = line[INDEX_FOR_RANGE_VALUES]
@@ -1297,30 +1401,35 @@ class Parser:
                     step = self.parse_expr(values[2])
                     cmd = ForRange(varname, start, stop, step)
                     return cmd
+
         t[KEYWORD_FOR_RANGE] = _for_range
-        
+
         def _for_each(line):
             elemname = line[INDEX_FOR_EACH_ELEMENT_NAME]
             iterable = self.parse_expr(line[INDEX_FOR_EACH_ITERABLE_NAME])
             cmd = ForEach(elemname, iterable)
             return cmd
+
         t[KEYWORD_FOR_EACH] = _for_each
 
         def _break(line):
             cmd = Break()
             return cmd
+
         t[KEYWORD_BREAK] = _break
 
         def _continue(line):
             cmd = Continue()
             return cmd
+
         t[KEYWORD_CONTINUE] = _continue
-        
+
         def _func_def(line):
             funcname = line[INDEX_FUNC_DEF_FUNC_NAME]
             params = line[INDEX_FUNC_DEF_PARAMETERS]
             cmd = FuncDef(funcname, params)
             return cmd
+
         t[KEYWORD_FUNC_DEF] = _func_def
 
         def _call(line):
@@ -1331,6 +1440,7 @@ class Parser:
             args = self.parse_args(line, INDEX_CALL_ARGS)
             cmd = Call(lhs, calledref, args)
             return cmd
+
         t[KEYWORD_CALL] = _call
 
         def _return(line):
@@ -1342,6 +1452,7 @@ class Parser:
                 expr = self.parse_expr(line[INDEX_RETURN_VALUE])
                 cmd = Return(expr)
                 return cmd
+
         t[KEYWORD_RETURN] = _return
 
         def _class_def(line):
@@ -1349,22 +1460,26 @@ class Parser:
             superclassname = line[INDEX_CLASS_DEF_SUPERCLASS_NAME]
             cmd = ClassDef(classname, superclassname)
             return cmd
+
         t[KEYWORD_CLASS_DEF] = _class_def
 
         def _comment(line):
             options = line[INDEX_OPTIONS]
             cmd = Comment(options)
             return cmd
+
         t[KEYWORD_COMMENT] = _comment
 
         def _pass(line):
             cmd = Pass()
             return cmd
+
         t[KEYWORD_PASS] = _pass
 
         def _end_of_code(line):
             cmd = EndOfCode()
             return cmd
+
         t[KEYWORD_END_OF_CODE] = _end_of_code
 
         self.table = t
@@ -1374,7 +1489,7 @@ class Parser:
         parserfunc = self.table[keyword]
         command = parserfunc(line)
         return command
-    
+
     def parse_args(self, listobj, index):
         args_list = listobj[index]
         parsed_args = []
@@ -1394,14 +1509,18 @@ class Parser:
                     parsed_list.append(value)
                 return parsed_list
             keyword = obj[INDEX_EXPRESSION_KEYWORD]
-            if keyword == KEYWORD_VARIABLE \
-                or keyword == KEYWORD_ATTRIBUTE \
-                or keyword == KEYWORD_SUBSCRIPT:
+            if (
+                keyword == KEYWORD_VARIABLE
+                or keyword == KEYWORD_ATTRIBUTE
+                or keyword == KEYWORD_SUBSCRIPT
+            ):
                 ref = self.parse_ref(obj)
                 return ref
-            elif keyword == KEYWORD_NOT \
-                or keyword == KEYWORD_NEGATIVE \
-                or keyword == KEYWORD_BIT_NOT:
+            elif (
+                keyword == KEYWORD_NOT
+                or keyword == KEYWORD_NEGATIVE
+                or keyword == KEYWORD_BIT_NOT
+            ):
                 operand = self.parse_expr(obj[INDEX_UNARY_OPERAND])
                 unary_op = UnaryOperation(keyword, operand)
                 return unary_op
@@ -1419,7 +1538,7 @@ class Parser:
             return parsed_dict
         else:
             return obj
-    
+
     def parse_ref(self, listobj):
         keyword = listobj[INDEX_EXPRESSION_KEYWORD]
         if keyword == KEYWORD_VARIABLE:
@@ -1435,43 +1554,66 @@ class Parser:
             attr = Attribute(objname, propertynames)
             return attr
         elif keyword == KEYWORD_SUBSCRIPT:
-            objref = self.parse_ref(
-                listobj[INDEX_SUBSCRIPT_REFERENCED_OBJECT])
-            indexexpr = self.parse_expr(
-                listobj[INDEX_SUBSCRIPT_INDEX_EXPR])
+            objref = self.parse_ref(listobj[INDEX_SUBSCRIPT_REFERENCED_OBJECT])
+            indexexpr = self.parse_expr(listobj[INDEX_SUBSCRIPT_INDEX_EXPR])
             sub = Subscript(objref, indexexpr)
             return sub
-    
+
+
 class AttributeNotExistError(Exception):
     def __init__(self, attrname):
         s = super(AttributeNotExistError, self)
         s.__init__()
         self.attrname = attrname
 
+
 class CannotInvokeFunctionError(Exception):
     pass
+
+
 class CannotParseInt(Exception):
     pass
+
+
 class CannotPopFromListError(Exception):
     pass
+
+
 class InconsistentBlockError(Exception):
     pass
+
+
 class InvalidArgumentsForSuperError(Exception):
     pass
+
+
 class InvalidBreakError(Exception):
     pass
+
+
 class InvalidContinueError(Exception):
     pass
+
+
 class InvalidEndOfCodeError(Exception):
     pass
+
+
 class InvalidExceptionError(Exception):
     pass
+
+
 class InvalidOperationError(Exception):
     pass
+
+
 class InvalidReturnError(Exception):
     pass
+
+
 class InvalidSuperclassError(Exception):
     pass
+
 
 class MethodNotFoundError(Exception):
     def __init__(self, name):
@@ -1479,19 +1621,29 @@ class MethodNotFoundError(Exception):
         s.__init__()
         self.name = name
 
+
 class NameNotFoundError(Exception):
     def __init__(self, name):
         s = super(NameNotFoundError, self)
         s.__init__()
         self.name = name
 
+
 class NotIterableError(Exception):
     pass
+
+
 class SubscriptNotAllowedError(Exception):
     pass
+
+
 class SuperCallFailedError(Exception):
     pass
+
+
 class UnhandledExceptionError(Exception):
     pass
+
+
 class ValueNotFoundError(Exception):
     pass
