@@ -1,3 +1,4 @@
 # calcium-py
 
-Python implementation of Calcium interpreted language
+Calcium interpreted language
+
