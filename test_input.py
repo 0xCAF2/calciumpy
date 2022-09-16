@@ -1,5 +1,5 @@
 from calciumlang import Runtime, RESULT_PAUSED, RESULT_EXECUTED
-from python2calcium import convert
+from converter import convert
 
 import json
 

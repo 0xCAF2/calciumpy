@@ -4,7 +4,7 @@ import io
 import os
 
 from calciumlang import Runtime
-from python2calcium import convert
+from converter import convert
 import sys
 import json
 
