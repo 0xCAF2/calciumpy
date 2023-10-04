@@ -8,7 +8,10 @@ from converter import convert
 import sys
 import json
 
-dir_name = sys.argv[1]
+if len(sys.argv) > 1:
+    dir_name = sys.argv[1]
+else:
+    dir_name = "tests"
 
 
 def run_calcium(filepath):
