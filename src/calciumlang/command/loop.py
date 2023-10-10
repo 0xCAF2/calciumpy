@@ -1,9 +1,10 @@
 import typing
-from calciumlang.block import Block, BlockKind, BlockResult
-from calciumlang.command.command import Command
-from calciumlang.environment import Environment
-from calciumlang.error import InvalidBreakError, InvalidContinueError
-from calciumlang.expression.assignable import Assignable
+from ..block import Block, BlockKind
+from ..block_result import BlockResult
+from .command import Command
+from ..environment import Environment
+from ..error import InvalidBreakError, InvalidContinueError
+from ..expression.assignable import Assignable
 
 
 class For(Command):

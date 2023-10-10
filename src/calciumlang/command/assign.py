@@ -1,7 +1,7 @@
 import typing
-from calciumlang.expression.assignable import Assignable
-from calciumlang.command.command import Command
-from calciumlang.environment import Environment
+from ..expression.assignable import Assignable
+from .command import Command
+from ..environment import Environment
 
 
 class Assign(Command):

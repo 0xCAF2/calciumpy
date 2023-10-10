@@ -1,6 +1,6 @@
 import typing
-from calciumlang.command.command import Command
-from calciumlang.environment import Environment
+from .command import Command
+from ..environment import Environment
 
 
 class ExprStmt(Command):

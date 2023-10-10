@@ -1,5 +1,11 @@
-from calciumlang import Runtime, RESULT_PAUSED, RESULT_EXECUTED
-from tools.converter import convert
+import sys
+
+sys.path.append("../src")
+sys.path.append("../tools")
+
+from calciumlang.runtime import Runtime, RuntimeResult
+
+from converter import convert
 
 import json
 
@@ -8,15 +14,16 @@ t = input('test:')
 print(t)
 print(input(len(input(input(t)))))
 """
-
-r = Runtime(json.loads(convert(s)))
+code = convert(s)
+# print(code)
+r = Runtime(json.loads(code))
 result = r.run()
 while True:
-    if result == RESULT_PAUSED:
+    if result == RuntimeResult.PAUSED:
         t = input(r.env.prompt)
         result = r.resume(t)
         continue
-    elif result == RESULT_EXECUTED:
+    elif result == RuntimeResult.EXECUTED:
         result = r.run()
     else:
         break

@@ -1,24 +1,24 @@
 import typing
-from calciumlang.expression.assignable import (
+from .expression.assignable import (
     Assignable,
     Variable,
     Attribute,
     Subscript,
 )
-from calciumlang.expression.call import Call, KeywordArgument
-from calciumlang.expression.operator import UnaryOperator, BinaryOperator
-from calciumlang.command.assign import Assign
-from calciumlang.command.class_stmt import Class
-from calciumlang.command.command import Command
-from calciumlang.command.expr_stmt import ExprStmt
-from calciumlang.command.function import Return
-from calciumlang.command.ifs import Ifs, If, Elif, Else
-from calciumlang.command.import_stmt import Import
-from calciumlang.command.loop import For, While, Break, Continue
-from calciumlang.command.pass_stmt import Comment, Pass, End
-from calciumlang.element import Element
-from calciumlang.index import Index
-from calciumlang.keyword import Keyword
+from .expression.call import Call, KeywordArgument
+from .expression.operator import UnaryOperator, BinaryOperator
+from .command.assign import Assign
+from .command.class_stmt import Class
+from .command.command import Command
+from .command.expr_stmt import ExprStmt
+from .command.function import Def, Return
+from .command.ifs import Ifs, If, Elif, Else
+from .command.import_stmt import Import
+from .command.loop import For, While, Break, Continue
+from .command.pass_stmt import Comment, Pass, End
+from .element import Element
+from .index import Index
+from .keyword import Keyword
 
 
 class Parser:
@@ -26,7 +26,7 @@ class Parser:
         pass
 
     def read(self, line: list[Element]) -> Command:
-        kwd: Keyword = line[Index.KEYWORD]  # type: ignore
+        kwd: Keyword = Keyword(line[Index.KEYWORD])
         parser_func = _table[kwd]
         cmd = parser_func(self, line)
         return cmd
@@ -55,7 +55,7 @@ class Parser:
                 parsed_list.append(self.read_expr(elem))
             return parsed_list
         # calcium's expression with keyword in the first element of a list
-        kwd = obj[Index.EXPRESSION_KEYWORD]
+        kwd = Keyword(obj[Index.EXPRESSION_KEYWORD])
         if kwd in (Keyword.VARIABLE, Keyword.ATTRIBUTE, Keyword.SUBSCRIPT):
             return self.read_assignable(obj)
         if kwd == Keyword.CALL:
@@ -72,14 +72,14 @@ class Parser:
             )
         if kwd in (Keyword.NOT, Keyword.NEGATIVE):
             operand = self.read_expr(obj[Index.UNARY_OPERAND])
-            return UnaryOperator(kwd, operand)
+            return UnaryOperator(kwd.value, operand)
         # should be a binary operator
         left = self.read_expr(obj[Index.LEFT_OPERAND])
         right = self.read_expr(obj[Index.RIGHT_OPERAND])
-        return BinaryOperator(kwd, left, right)
+        return BinaryOperator(kwd.value, left, right)
 
     def read_assignable(self, listobj: list[Element]) -> Assignable:
-        kwd = listobj[Index.EXPRESSION_KEYWORD]
+        kwd = Keyword(listobj[Index.EXPRESSION_KEYWORD])
         if kwd == Keyword.VARIABLE:
             name: str = listobj[Index.VAR_NAME]  # type: ignore
             return Variable(name)
@@ -169,6 +169,12 @@ def _continue(parser: Parser, line: list[Element]) -> Command:
     return Continue()
 
 
+def _def(parser: Parser, line: list[Element]) -> Command:
+    name: str = line[Index.FUNC_NAME]  # type: ignore
+    args = parser.read_args(line[Index.FUNC_ARGS])  # type: ignore
+    return Def(name, args)
+
+
 def _return(parser: Parser, line: list[Element]) -> Command:
     if len(line) < Index.RETURN_VALUE + 1:
         # return without value
@@ -217,6 +223,7 @@ _table[Keyword.FOR] = _for
 _table[Keyword.WHILE] = _while
 _table[Keyword.BREAK] = _break
 _table[Keyword.CONTINUE] = _continue
+_table[Keyword.DEF] = _def
 _table[Keyword.RETURN] = _return
 _table[Keyword.CLASS] = _class
 _table[Keyword.IMPORT] = _import

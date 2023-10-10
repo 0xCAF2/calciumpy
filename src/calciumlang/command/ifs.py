@@ -1,7 +1,8 @@
 import typing
-from calciumlang.block import Block, BlockKind, BlockResult
-from calciumlang.command.command import Command
-from calciumlang.environment import Environment
+from ..block import Block, BlockKind
+from ..block_result import BlockResult
+from .command import Command
+from ..environment import Environment
 
 
 class Ifs(Command):

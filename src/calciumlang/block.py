@@ -1,7 +1,8 @@
 import enum
 import typing
-from calciumlang.address import Address
-from calciumlang.environment import Environment
+from .address import Address
+from .block_result import BlockResult
+from .environment import Environment
 
 
 class BlockKind(enum.Enum):
@@ -14,11 +15,6 @@ class BlockKind(enum.Enum):
     CALL = 4
 
     CLASS = 5
-
-
-class BlockResult(enum.Enum):
-    JUMP = 0
-    SHIFT = 1
 
 
 class Block:

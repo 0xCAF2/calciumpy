@@ -1,7 +1,7 @@
 import typing
-from calciumlang.environment import Environment
-from calciumlang.keyword import Keyword
-from calciumlang.error import OperatorNotSupportedError
+from ..environment import Environment
+from ..keyword import Keyword
+from ..error import OperatorNotSupportedError
 
 
 class BinaryOperator:

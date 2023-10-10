@@ -1,8 +1,8 @@
 from inspect import signature
 import typing
-from calciumlang.expression.assignable import Attribute, Variable
-from calciumlang.environment import Environment
-from calciumlang.runtime import InputCalled
+from .assignable import Attribute, Variable
+from ..environment import Environment
+from ..label import InputCalled
 
 
 class Call:

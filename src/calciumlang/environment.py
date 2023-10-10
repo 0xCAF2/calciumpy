@@ -1,10 +1,9 @@
 import typing
-from calciumlang.address import Address
-from calciumlang.expression.assignable import Assignable
-from calciumlang.block import Block, BlockResult
-from calciumlang.element import Element
-from calciumlang.index import Index
-from calciumlang.namespace import GlobalScope, Namespace
+from .address import Address
+from .block_result import BlockResult
+from .element import Element
+from .index import Index
+from .namespace import GlobalScope, Namespace
 
 
 class NextLineCalculation:
@@ -15,6 +14,8 @@ class NextLineCalculation:
 
 class Environment:
     def __init__(self, code: list):
+        from .block import Block
+
         self.code: list[list[Element]] = code
         self.addr = Address(1, 0)
         self.blocks: list[Block] = []
@@ -27,7 +28,12 @@ class Environment:
         self.returned_value: typing.Any = None
 
     def evaluate(self, obj: typing.Any) -> typing.Any:
+        from .expression.assignable import Assignable
+        from .expression.call import Call
+
         if isinstance(obj, Assignable):
+            return obj.evaluate(self)
+        if isinstance(obj, Call):
             return obj.evaluate(self)
         if isinstance(obj, list):
             return [self.evaluate(elem) for elem in obj]
@@ -40,10 +46,11 @@ class Environment:
         return obj
 
     def update_addr_to_next_command(self) -> None:
-        next_line_index = 0
+        next_line_index = self.addr.line
         while True:
-            next_line_index = self.addr.line + 1
+            next_line_index += 1
             calculating_next_line = self._pop_blocks(next_line_index)
+            next_line_index = calculating_next_line.processing_line
             if calculating_next_line.block_result == BlockResult.SHIFT:
                 break
         self.addr.line = next_line_index

@@ -1,5 +1,5 @@
 import typing
-from calciumlang.environment import Environment
+from ..environment import Environment
 import abc
 
 

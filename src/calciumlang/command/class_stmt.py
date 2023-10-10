@@ -1,9 +1,10 @@
 import typing
-from calciumlang.command.command import Command
-from calciumlang.block import Block, BlockKind, BlockResult
-from calciumlang.environment import Environment
-from calciumlang.expression.assignable import Variable, Attribute
-from calciumlang.namespace import ClassScope
+from .command import Command
+from ..block import Block, BlockKind
+from ..block_result import BlockResult
+from ..environment import Environment
+from ..expression.assignable import Variable, Attribute
+from ..namespace import ClassScope
 
 
 class Class(Command):

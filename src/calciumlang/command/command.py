@@ -1,6 +1,6 @@
 import abc
 
-from calciumlang.environment import Environment
+from ..environment import Environment
 
 
 class Command(abc.ABC):

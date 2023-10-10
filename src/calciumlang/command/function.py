@@ -1,10 +1,11 @@
 import typing
-from calciumlang.block import Block, BlockKind, BlockResult
-from calciumlang.command.command import Command
-from calciumlang.environment import Environment
-from calciumlang.error import InvalidReturnError
-from calciumlang.namespace import ClassScope, FuncScope
-from calciumlang.parser import Parser
+from ..block import Block, BlockKind
+from ..block_result import BlockResult
+from .command import Command
+from ..environment import Environment
+from ..error import InvalidReturnError
+from ..label import FunctionCalled
+from ..namespace import ClassScope, FuncScope
 
 
 class Def(Command):
@@ -53,6 +54,8 @@ class Def(Command):
                 # controls the flow of the program
                 raise FunctionCalled()
 
+            from ..parser import Parser
+
             parser = Parser()
             while not had_exited:
                 env.update_addr_to_next_command()
@@ -82,7 +85,3 @@ class Return(Command):
                 env.blocks.pop()
                 continue
             raise InvalidReturnError()
-
-
-class FunctionCalled(Exception):
-    pass

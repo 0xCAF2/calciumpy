@@ -2,15 +2,15 @@ import enum
 import typing
 import json
 
-from calciumlang.address import Address
-from calciumlang.command.command import Command
-from calciumlang.command.function import FunctionCalled
-from calciumlang.command.pass_stmt import End
-from calciumlang.element import Element
-from calciumlang.environment import Environment
-from calciumlang.index import Index
-from calciumlang.keyword import Keyword
-from calciumlang.parser import Parser
+from .address import Address
+from .command.command import Command
+from .command.pass_stmt import End
+from .element import Element
+from .environment import Environment
+from .index import Index
+from .keyword import Keyword
+from .label import FunctionCalled, InputCalled
+from .parser import Parser
 
 
 class RuntimeResult(enum.Enum):
@@ -90,13 +90,13 @@ class Runtime:
 
         self.env.update_addr_to_next_command()
         next_line = self.env.code[self.env.addr.line]
-        kwd = next_line[Index.KEYWORD]
+        kwd = Keyword(next_line[Index.KEYWORD])
         while kwd in (Keyword.COMMENT, Keyword.IFS):
             cmd = self.parser.read(next_line)
             cmd.execute(self.env)
             self.env.update_addr_to_next_command()
             next_line = self.env.code[self.env.addr.line]
-            kwd = next_line[Index.KEYWORD]
+            kwd = Keyword(next_line[Index.KEYWORD])
 
         if self.env.addr.line in self.breakpoints:
             return RuntimeResult.BREAKPOINT
@@ -108,10 +108,3 @@ class CallingCommand:
     def __init__(self, addr: Address, cmd: Command):
         self.addr = addr
         self.cmd = cmd
-
-
-class InputCalled(Exception):
-    """When the input() function is called, this exception is raised
-    to pause the runtime."""
-
-    pass

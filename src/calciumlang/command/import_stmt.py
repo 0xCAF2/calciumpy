@@ -1,6 +1,6 @@
-from calciumlang.command.command import Command
-from calciumlang.environment import Environment
-from calciumlang.error import InvalidModuleNameError
+from .command import Command
+from ..environment import Environment
+from ..error import InvalidModuleNameError
 
 
 class Import(Command):
