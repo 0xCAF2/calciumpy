@@ -31,7 +31,7 @@ class Class(Command):
             attributes = env.context.create_attributes()
             env.context = previous_context
             classtype = type(self.name, (superclass,), attributes)
-            env.context.register(self.name, classtype)
+            env.context.define(self.name, classtype)
             env.addr.shift(-1)
             return BlockResult.SHIFT
 

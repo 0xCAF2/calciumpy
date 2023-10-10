@@ -61,8 +61,18 @@ class Def(Command):
                 env.update_addr_to_next_command()
                 last_index = len(env.code) - 1
                 if env.addr.indent == 0:
-                    end_of_code = parser.read(env.code[last_index])
-                    # TODO: implement here
+                    break
+                if env.addr.line >= last_index:
+                    break
+                line = env.code[env.addr.line]
+                cmd = parser.read(line)
+                cmd.execute(env)
+            env.update_addr_to_next_command()
+            value = env.returned_value
+            env.returned_value = None
+            return value
+
+        env.context.define(self.name, _func)
 
 
 class Return(Command):

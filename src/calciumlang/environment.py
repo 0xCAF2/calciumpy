@@ -30,10 +30,15 @@ class Environment:
     def evaluate(self, obj: typing.Any) -> typing.Any:
         from .expression.assignable import Assignable
         from .expression.call import Call
+        from .expression.operator import UnaryOperator, BinaryOperator
 
         if isinstance(obj, Assignable):
             return obj.evaluate(self)
+        if isinstance(obj, BinaryOperator):
+            return obj.evaluate(self)
         if isinstance(obj, Call):
+            return obj.evaluate(self)
+        if isinstance(obj, UnaryOperator):
             return obj.evaluate(self)
         if isinstance(obj, list):
             return [self.evaluate(elem) for elem in obj]
@@ -46,9 +51,9 @@ class Environment:
         return obj
 
     def update_addr_to_next_command(self) -> None:
-        next_line_index = self.addr.line
+        next_line_index = 0
         while True:
-            next_line_index += 1
+            next_line_index = self.addr.line + 1
             calculating_next_line = self._pop_blocks(next_line_index)
             next_line_index = calculating_next_line.processing_line
             if calculating_next_line.block_result == BlockResult.SHIFT:

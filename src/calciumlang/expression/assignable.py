@@ -18,7 +18,7 @@ class Variable(Assignable):
         self.name = name
 
     def assign(self, value: typing.Any, env: Environment) -> None:
-        env.context.register(self.name, value)
+        env.context.define(self.name, value)
 
     def evaluate(self, env: Environment) -> typing.Any:
         return env.context.lookup(self.name)
@@ -44,7 +44,7 @@ class Attribute(Assignable):
         return target
 
     def _lookup(self, env: Environment) -> typing.Any:
-        if isinstance(self.obj, Variable or isinstance(self.obj, Attribute)):
+        if isinstance(self.obj, Assignable):
             return self.obj.evaluate(env)
         return self.obj
 

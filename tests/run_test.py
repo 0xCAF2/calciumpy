@@ -3,15 +3,23 @@ from contextlib import redirect_stdout
 import io
 import os
 
-from calciumlang import Runtime
-from tools.converter import convert
 import sys
 import json
+import sys
 
+sys.path.append("../src")
+sys.path.append("../tools")
+
+from calciumlang.runtime import Runtime
+
+from converter import convert
+
+dir_name = None
+file_names = None
 if len(sys.argv) > 1:
-    dir_name = sys.argv[1]
+    file_names = sys.argv[1:]
 else:
-    dir_name = "tests"
+    dir_name = "test_src"
 
 
 def run_calcium(filepath):
@@ -25,11 +33,14 @@ def run_calcium(filepath):
 
 if __name__ == "__main__":
     suite = unittest.TestSuite()
-    for filename in os.listdir(dir_name):
+    files = []
+    if dir_name is not None:
+        files = os.listdir(dir_name)
+    if file_names is not None:
+        files = file_names
+    for filename in files:
         if not filename.endswith(".py"):
             continue
-        testname = filename[:-3]
-        filepath = os.path.join(os.getcwd(), dir_name, filename)
 
         def make_test(filepath):
             def test_file(self):
@@ -43,6 +54,11 @@ if __name__ == "__main__":
 
             return test_file
 
+        testname = filename[:-3]
+        if dir_name is not None:
+            filepath = os.path.join(os.getcwd(), dir_name, filename)
+        else:
+            filepath = os.path.join(os.getcwd(), filename)
         methodname = "test_{}".format(filename)
         testcase = type(
             testname, (unittest.TestCase,), {methodname: make_test(filepath)}

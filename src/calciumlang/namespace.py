@@ -10,7 +10,7 @@ class Namespace:
         self.parent = parent  # global scope has no parent
         self.dictobj = dictobj
 
-    def register(self, name: str, value: typing.Any) -> None:
+    def define(self, name: str, value: typing.Any) -> None:
         self.dictobj[name] = value
 
     def lookup(self, name: str) -> typing.Any:

@@ -10,18 +10,26 @@ from converter import convert
 import json
 
 s = """
-t = input('test:')
+t = input('test: ')
 print(t)
-print(input(len(input(input(t)))))
+print(len(input(len(input(input(t))))))
 """
+
+if len(sys.argv) > 1:
+    with open(sys.argv[1]) as fin:
+        s = fin.read()
+
 code = convert(s)
-# print(code)
+print(code)
 r = Runtime(json.loads(code))
-result = r.run()
+try:
+    result = r.run()
+except:
+    print(r.env.code[r.env.addr.line])
+
 while True:
     if result == RuntimeResult.PAUSED:
-        t = input(r.env.prompt)
-        result = r.resume(t)
+        result = r.resume("test:")
         continue
     elif result == RuntimeResult.EXECUTED:
         result = r.run()

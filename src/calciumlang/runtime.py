@@ -64,13 +64,13 @@ class Runtime:
         last_index = len(self.env.code) - 1
         if self.env.addr.indent == 0:
             return RuntimeResult.TERMINATED
-        if self.env.addr.line > last_index:
+        if self.env.addr.line >= last_index:
             return RuntimeResult.TERMINATED
 
-        line: list[Element] = self.env.code[self.env.addr.line]
-        cmd: Command = self.parser.read(line)
+        line = self.env.code[self.env.addr.line]
+        cmd = self.parser.read(line)
 
-        caller_addr: Address = self.env.addr.clone()
+        caller_addr = self.env.addr.clone()
         if len(self._calls) > 0 and caller_addr.is_at(self._calls[-1].addr):
             last_called_cmd = self._calls.pop()
             cmd = last_called_cmd.cmd

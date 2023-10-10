@@ -28,6 +28,8 @@ class Keyword(enum.Enum):
     OR = "or"
     NOT = "not"
 
+    IN = "in"
+
     NEGATIVE = "-_"
 
     # statements

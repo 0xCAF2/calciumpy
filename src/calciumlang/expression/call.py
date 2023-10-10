@@ -1,6 +1,8 @@
 from inspect import signature
 import typing
 from .assignable import Attribute, Variable
+from ..command.class_stmt import Class
+from ..command.function import Def
 from ..environment import Environment
 from ..label import InputCalled
 
@@ -41,7 +43,7 @@ class Call:
                 self.is_returned = True
                 self.value = env.returned_value
                 env.prompt = ""
-                return self.value
+            return self.value
         if funcobj is super:
             if not self.is_called:
                 this = env.context.lookup("self")
@@ -49,9 +51,13 @@ class Call:
                 self.is_called, self.is_returned = True, True
                 self.value = super(klass, this)
             return self.value
+
         if not self.is_called:
             self.is_called = True
-            if callable(funcobj) and funcobj.__module__ == __name__:
+            if callable(funcobj) and funcobj.__module__ in (
+                Class.__module__,
+                Def.__module__,
+            ):
                 # user defined function
                 sig = signature(funcobj)
                 if "*args" in str(sig):

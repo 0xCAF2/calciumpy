@@ -14,4 +14,4 @@ class Import(Command):
                 raise InvalidModuleNameError(name)
         exec(f"import {self.path}")
         module_name = module_names[0]
-        env.context.register(module_name, eval(module_name))
+        env.context.define(module_name, eval(module_name))

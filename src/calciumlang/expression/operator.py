@@ -5,7 +5,7 @@ from ..error import OperatorNotSupportedError
 
 
 class BinaryOperator:
-    def __init__(self, op: str, left: typing.Any, right: typing.Any):
+    def __init__(self, op: Keyword, left: typing.Any, right: typing.Any):
         self.op = op
         self.left = left
         self.right = right
@@ -45,11 +45,14 @@ class BinaryOperator:
             return l and r
         if self.op == Keyword.OR:
             return l or r
+
+        if self.op == Keyword.IN:
+            return l in r
         raise OperatorNotSupportedError(self.op)
 
 
 class UnaryOperator:
-    def __init__(self, op: str, operand: typing.Any) -> None:
+    def __init__(self, op: Keyword, operand: typing.Any) -> None:
         self.op = op
         self.operand = operand
 

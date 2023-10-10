@@ -72,11 +72,11 @@ class Parser:
             )
         if kwd in (Keyword.NOT, Keyword.NEGATIVE):
             operand = self.read_expr(obj[Index.UNARY_OPERAND])
-            return UnaryOperator(kwd.value, operand)
+            return UnaryOperator(kwd, operand)
         # should be a binary operator
         left = self.read_expr(obj[Index.LEFT_OPERAND])
         right = self.read_expr(obj[Index.RIGHT_OPERAND])
-        return BinaryOperator(kwd.value, left, right)
+        return BinaryOperator(kwd, left, right)
 
     def read_assignable(self, listobj: list[Element]) -> Assignable:
         kwd = Keyword(listobj[Index.EXPRESSION_KEYWORD])
@@ -84,7 +84,7 @@ class Parser:
             name: str = listobj[Index.VAR_NAME]  # type: ignore
             return Variable(name)
         if kwd == Keyword.ATTRIBUTE:
-            obj = self.read_expr(listobj[Index.ATTR_OBJECT])
+            obj = self.read_assignable(listobj[Index.ATTR_OBJECT])  # type: ignore
             properties = []
             # attributes can chain property names
             for i in range(Index.ATTR_NAME, len(listobj)):
@@ -116,7 +116,7 @@ def _make_compound_assign(
 ) -> Assign:
     lhs = parser.read_assignable(line[Index.ASSIGN_LEFT])  # type: ignore
     rhs = parser.read_expr(line[Index.ASSIGN_RIGHT])
-    binop = BinaryOperator(keyword.value, lhs, rhs)
+    binop = BinaryOperator(keyword, lhs, rhs)
     return Assign(lhs, binop)
 
 
@@ -170,8 +170,8 @@ def _continue(parser: Parser, line: list[Element]) -> Command:
 
 
 def _def(parser: Parser, line: list[Element]) -> Command:
-    name: str = line[Index.FUNC_NAME]  # type: ignore
-    args = parser.read_args(line[Index.FUNC_ARGS])  # type: ignore
+    name: str = line[Index.DEF_NAME]  # type: ignore
+    args = parser.read_args(line[Index.DEF_PARAMETERS])  # type: ignore
     return Def(name, args)
 
 
