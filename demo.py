@@ -1,10 +1,10 @@
-from converter import convert
+from src.calciumlang.tools.converter import convert
 import json
-from calciumlang import Runtime
+from src.calciumlang.runtime import Runtime
 
-# converter can read the subset of Python code and
-# generate Calcium code.
-json_text = convert(
+# "converter" can read the subset of Python code and
+# generates Calcium code.
+calcium_code = convert(
     """
 # write Python source code here
 message = 'Hello, World.'
@@ -12,8 +12,6 @@ print(message)
 """
 )
 
-code = json.loads(json_text)
-
-# A Runtime executes Calcium code given as JSON array.
-runtime = Runtime(code)
+# A Runtime executes Calcium code which is given as JSON array.
+runtime = Runtime(calcium_code)
 runtime.run()  # outputs 'Hello, World.'

@@ -3,7 +3,7 @@ import ast
 import json
 import traceback
 
-VERSION = "0_22"
+VERSION = "0.0.1"
 
 KEYWORD_COMMENT = "#"
 
@@ -12,7 +12,6 @@ KEYWORD_ATTR = "attr"
 KEYWORD_CALL = "call"
 KEYWORD_COMMA = ","
 KEYWORD_KWARG = "kwarg"
-KEYWORD_SET = "set"
 KEYWORD_SUBSCRIPT = "sub"
 KEYWORD_TUPLE = "tuple"
 KEYWORD_VAR = "var"
@@ -25,7 +24,6 @@ KEYWORD_CONTINUE = "continue"
 KEYWORD_ELIF = "elif"
 KEYWORD_ELSE = "else"
 KEYWORD_END = "end"
-KEYWORD_EXCEPT = "except"
 KEYWORD_EXPR_STMT = "expr"
 KEYWORD_FOR = "for"
 KEYWORD_FUNC_DEF = "def"
@@ -33,9 +31,7 @@ KEYWORD_IF = "if"
 KEYWORD_IFS = "ifs"
 KEYWORD_IMPORT = "import"
 KEYWORD_PASS = "pass"
-KEYWORD_RAISE = "raise"
 KEYWORD_RETURN = "return"
-KEYWORD_TRY = "try"
 KEYWORD_WHILE = "while"
 
 
@@ -206,11 +202,6 @@ class Python2CalciumVisitor(ast.NodeVisitor):
         elems.extend([self.visit(e) for e in node.elts])
         return elems
 
-    def visit_Set(self, node):
-        elems = [KEYWORD_SET]
-        elems.extend([self.visit(e) for e in node.elts])
-        return elems
-
     def visit_For(self, node):
         elems = []
         var_elem = self.visit(node.target)
@@ -258,29 +249,6 @@ class Python2CalciumVisitor(ast.NodeVisitor):
 
     def visit_Continue(self, node):
         self.output_command(self.get_indent(node), KEYWORD_CONTINUE)
-
-    def visit_Try(self, node):
-        self.output_command(self.get_indent(node), KEYWORD_TRY)
-        for stmt in node.body:
-            self.visit(stmt)
-        for ex in node.handlers:
-            elems = []
-            if ex.type != None:
-                # Allowed one type only
-                elems.append(ex.type.id)
-            if ex.name != None:
-                elems.append(ex.name)
-            self.output_command(self.get_indent(ex), KEYWORD_EXCEPT, elems)
-            for stmt in ex.body:
-                self.visit(stmt)
-
-    def visit_Raise(self, node):
-        elems = []
-        assert isinstance(node.exc, ast.Call)
-        typename = node.exc.func.id
-        elems.append(typename)
-        elems.append(self.get_arguments(node.exc.args))
-        self.output_command(self.get_indent(node), KEYWORD_RAISE, elems)
 
     def visit_Compare(self, node):
         return self.get_bin_op(node, node.ops[0], node.left, node.comparators[0])
