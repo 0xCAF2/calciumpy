@@ -10,7 +10,6 @@ Calcium is a programming language that takes a JSON array as input. It is intero
 
 ```python
 from calciumlang.tools.converter import convert
-import json
 from calciumlang.runtime import Runtime
 
 # "convert()" can read the subset of Python code and

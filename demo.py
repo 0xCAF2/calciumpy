@@ -1,5 +1,4 @@
 from src.calciumlang.tools.converter import convert
-import json
 from src.calciumlang.runtime import Runtime
 
 # "converter" can read the subset of Python code and
