@@ -9,38 +9,18 @@ Calcium is a programming language that takes a JSON array as input. It is intero
 ## How to create the interpreter and run Calcium code
 
 ```python
-from calciumlang.tools.converter import convert
-from calciumlang.runtime import Runtime
-
-# "convert()" can read the subset of Python code and
-# generates Calcium code.
-calcium_code = convert(
-    """
-# write Python source code here
-message = 'Hello, World.'
-print(message)
-"""
-)
-
-# The Runtime executes Calcium code.
-r = Runtime(calcium_code)
-r.run()  # outputs 'Hello, World.'
-```
-
-## How to run Calcium code directly
-
-```python
 from calciumlang.runtime import Runtime
 
 # Calcium code is given as a JSON array.
-calcium_code_array = [
+calcium_code = [
   [1, [], "#", "0.0.1"],
   [1, [], "expr", ["call", ["var", "print"], ["Hello, World."]]],
   [1, [], "end"],
 ]
 
-r = Runtime(calcium_code_array)
-r.run()
+# The Runtime executes Calcium code.
+r = Runtime(calcium_code)
+r.run()  # outputs 'Hello, World.'
 ```
 
 ## Applications using Calcium
