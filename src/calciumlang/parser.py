@@ -64,7 +64,7 @@ class Parser:
             return Call(callee, args)  # type: ignore
         if kwd in (Keyword.TUPLE, Keyword.COMMA):
             return tuple(
-                self.read_expr(elem) for elem in obj[Index.EXPRESSION_KEYWORD :]
+                self.read_expr(elem) for elem in obj[Index.EXPRESSION_KEYWORD + 1 :]
             )
         if kwd == Keyword.KWARG:
             return KeywordArgument(
@@ -78,20 +78,22 @@ class Parser:
         right = self.read_expr(obj[Index.RIGHT_OPERAND])
         return BinaryOperator(kwd, left, right)
 
-    def read_assignable(self, listobj: list[Element]) -> Assignable:
+    def read_assignable(
+        self, listobj: list[Element]
+    ) -> typing.Union[Assignable, tuple]:
         kwd = Keyword(listobj[Index.EXPRESSION_KEYWORD])
         if kwd == Keyword.VARIABLE:
             name: str = listobj[Index.VAR_NAME]  # type: ignore
             return Variable(name)
         if kwd == Keyword.ATTRIBUTE:
-            obj = self.read_assignable(listobj[Index.ATTR_OBJECT])  # type: ignore
+            obj: typing.Union[Assignable, str] = self.read_expr(listobj[Index.ATTR_OBJECT])  # type: ignore
             properties = []
             # attributes can chain property names
             for i in range(Index.ATTR_NAME, len(listobj)):
                 properties.append(listobj[i])
             return Attribute(obj, properties)
         if kwd == Keyword.SUBSCRIPT:
-            obj = self.read_assignable(listobj[Index.SUBSCRIPT_OBJECT])  # type: ignore
+            obj: typing.Union[Assignable] = self.read_assignable(listobj[Index.SUBSCRIPT_OBJECT])  # type: ignore
             if len(listobj) == Index.SUBSCRIPT_INDEX + 1:
                 index = self.read_expr(listobj[Index.SUBSCRIPT_INDEX])
                 return Subscript(obj, index)
@@ -99,6 +101,11 @@ class Parser:
                 start = self.read_expr(listobj[Index.SUBSCRIPT_SLICE_START])
                 stop = self.read_expr(listobj[Index.SUBSCRIPT_SLICE_STOP])
                 return Subscript(obj, None, start, stop)
+        if kwd == Keyword.COMMA:
+            assignables = []
+            for elem in listobj[Index.EXPRESSION_KEYWORD + 1 :]:
+                assignables.append(self.read_assignable(elem))  # type: ignore
+            return tuple(assignables)
         raise ValueError("Invalid keyword for expression")
 
 

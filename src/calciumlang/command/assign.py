@@ -5,7 +5,7 @@ from ..environment import Environment
 
 
 class Assign(Command):
-    def __init__(self, lhs: Assignable, rhs: typing.Any):
+    def __init__(self, lhs: typing.Union[Assignable, tuple], rhs: typing.Any):
         self.lhs = lhs
         self.rhs = rhs
 
