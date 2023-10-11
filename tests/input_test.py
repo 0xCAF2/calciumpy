@@ -1,11 +1,10 @@
 import sys
 
 sys.path.append("../src")
-sys.path.append("../tools")
 
 from calciumlang.runtime import Runtime, RuntimeResult
 
-from converter import convert
+from calciumlang.tools.converter import convert
 
 import json
 
