@@ -15,7 +15,7 @@ from calciumlang.tools.converter import convert
 
 dir_name = None
 file_names = None
-if len(sys.argv) > 1:
+if len(sys.argv) > 1:  # sys.argv[0] is the name of this file
     file_names = sys.argv[1:]
 else:
     dir_name = "test_src"

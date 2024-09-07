@@ -1,5 +1,5 @@
 import typing
-from error import NameNotFoundError
+from .error import NameNotFoundError
 
 
 class Namespace:
