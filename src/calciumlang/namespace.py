@@ -1,4 +1,5 @@
 import typing
+from error import NameNotFoundError
 
 
 class Namespace:
@@ -18,7 +19,7 @@ class Namespace:
             return self.dictobj[name]
         except KeyError:
             if self.parent is None:
-                raise NameError(f"Name {name} is not defined")
+                raise NameNotFoundError(name)
             else:
                 return self.parent.lookup(name)
 
@@ -49,6 +50,6 @@ class GlobalScope(Namespace):
                 else:
                     return getattr(__builtins__, name)
             except KeyError:
-                raise NameError(f"Name {name} is not defined")
+                raise NameNotFoundError(name)
             except:
                 raise
