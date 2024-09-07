@@ -2,9 +2,6 @@ import typing
 from .address import Address
 from .block_result import BlockResult
 from .element import Element
-from .expression.assignable import Assignable
-from .expression.call import Call
-from .expression.operator import UnaryOperator, BinaryOperator
 from .index import Index
 from .namespace import GlobalScope, Namespace
 
@@ -31,6 +28,11 @@ class Environment:
         self.returned_value: typing.Any = None
 
     def evaluate(self, obj: typing.Any) -> typing.Any:
+        # to avoid circular imports, these must write here
+        from .expression.assignable import Assignable
+        from .expression.call import Call
+        from .expression.operator import UnaryOperator, BinaryOperator
+
         if isinstance(obj, Assignable):
             return obj.evaluate(self)
         if isinstance(obj, BinaryOperator):
