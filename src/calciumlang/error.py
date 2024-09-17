@@ -37,6 +37,13 @@ class NameNotFoundError(Exception):
         self.name = name
 
 
+class ObjectNotIterableError(Exception):
+    def __init__(self, message: str, ref: str, value: str):
+        super().__init__(message)
+        self.ref = ref
+        self.value = value
+
+
 class OperatorNotSupportedError(Exception):
     pass
 

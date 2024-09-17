@@ -298,6 +298,9 @@ class Python2CalciumVisitor(ast.NodeVisitor):
     def visit_Num(self, node):
         return node.n
 
+    def visit_Constant(self, node):
+        return node.value
+
     def visit_Str(self, node):
         return node.s.replace("\n", "\\n")
 
