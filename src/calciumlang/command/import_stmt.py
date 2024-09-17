@@ -11,7 +11,7 @@ class Import(Command):
         module_names = self.path.split(".")
         for name in module_names:
             if not name.isalnum():
-                raise InvalidModuleNameError(name)
+                raise InvalidModuleNameError("module's name is invalid", name)
         exec(f"import {self.path}")
         module_name = module_names[0]
         env.context.define(module_name, eval(module_name))

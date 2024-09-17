@@ -89,12 +89,14 @@ class Subscript(Assignable):
                 return
             except IndexError:
                 raise OutOfRangeError(
+                    "index out of range",
                     str(self.ref),
                     str(self.key),
                     str(key),
                 )
             except TypeError:
                 raise AssignmentNotSupportedError(
+                    "cannot assign to the object",
                     str(self.ref),
                     str(self.key),
                 )
@@ -124,12 +126,14 @@ class Subscript(Assignable):
                 return obj[key]
             except IndexError:
                 raise OutOfRangeError(
+                    "index out of range",
                     str(self.ref),
                     str(self.key),
                     str(key),
                 )
             except KeyError:
                 raise KeyNotContainedError(
+                    "key not contained",
                     str(self.ref),
                     str(self.key),
                     str(key),
