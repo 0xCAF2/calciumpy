@@ -3,7 +3,11 @@ from ..block import Block, BlockKind
 from ..block_result import BlockResult
 from .command import Command
 from ..environment import Environment
-from ..error import InvalidBreakError, InvalidContinueError, ObjectNotIterableError
+from ..error import (
+    InvalidBreakError,
+    InvalidContinueError,
+    ObjectNotIterableError,
+)
 from ..expression.assignable import Assignable
 
 
