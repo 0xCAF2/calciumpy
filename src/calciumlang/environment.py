@@ -28,6 +28,7 @@ class Environment:
         self.returned_value: typing.Any = None
 
     def evaluate(self, obj: typing.Any) -> typing.Any:
+        # to avoid circular imports, these must write here
         from .expression.assignable import Assignable
         from .expression.call import Call
         from .expression.operator import UnaryOperator, BinaryOperator

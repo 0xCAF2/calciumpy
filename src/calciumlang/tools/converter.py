@@ -3,7 +3,7 @@ import ast
 import json
 import traceback
 
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 
 KEYWORD_COMMENT = "#"
 
@@ -167,7 +167,7 @@ class Python2CalciumVisitor(ast.NodeVisitor):
             self.visit(stmt)
 
     def visit_ClassDef(self, node):
-        elems = [node.name]
+        elems: list[str | None] = [node.name]
         if len(node.bases) > 0:
             elems.append(self.visit(node.bases[0]))
         else:
@@ -292,11 +292,15 @@ class Python2CalciumVisitor(ast.NodeVisitor):
     def visit_Dict(self, node):
         obj = {}
         for k, v in zip(node.keys, node.values):
-            obj[self.visit(k)] = self.visit(v)
+            if k is not None:
+                obj[self.visit(k)] = self.visit(v)
         return obj
 
     def visit_Num(self, node):
         return node.n
+
+    def visit_Constant(self, node):
+        return node.value
 
     def visit_Str(self, node):
         return node.s.replace("\n", "\\n")
@@ -308,16 +312,15 @@ class Python2CalciumVisitor(ast.NodeVisitor):
         return node.value
 
     def visit_Attribute(self, node):
-        attrs = [node.attr]
+        attrs: list[str | list] = [node.attr]
         childnode = node.value
         while isinstance(childnode, ast.Attribute):
-            attrs.append(childnode.attr)
+            attrs.insert(0, childnode.attr)
             childnode = childnode.value
-        attrs.reverse()
         if isinstance(childnode, ast.Name):
             attrs.insert(0, [KEYWORD_VAR, childnode.id])
         else:
-            attrs.insert(0, childnode.value)
+            attrs.insert(0, childnode.value)  # type: ignore
         attrs.insert(0, KEYWORD_ATTR)
         return attrs
 
@@ -344,14 +347,14 @@ class Python2CalciumVisitor(ast.NodeVisitor):
         return self.output_node(node, KEYWORD_EXPR_STMT, [value])
 
     def visit_Call(self, node):
-        elems = [KEYWORD_CALL]
+        elems: list[str | list] = [KEYWORD_CALL]
         func_ref, args = self.get_call(node)
         elems.append(func_ref)
         elems.append(args)
         if len(node.keywords) > 0:
             for kwd in node.keywords:
                 kwarg = [KEYWORD_KWARG]
-                kwarg.append(kwd.arg)
+                kwarg.append(kwd.arg)  # type: ignore
                 kwarg.append(self.visit(kwd.value))
                 # append to the list already added to elems
                 args.append(kwarg)

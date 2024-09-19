@@ -3,7 +3,11 @@ from ..block import Block, BlockKind
 from ..block_result import BlockResult
 from .command import Command
 from ..environment import Environment
-from ..error import InvalidBreakError, InvalidContinueError
+from ..error import (
+    InvalidBreakError,
+    InvalidContinueError,
+    ObjectNotIterableError,
+)
 from ..expression.assignable import Assignable
 
 
@@ -17,18 +21,22 @@ class For(Command):
         self.iterable = iterable
 
     def execute(self, env: Environment) -> None:
-        iterator = iter(env.evaluate(self.iterable))
+        try:
+            value = env.evaluate(self.iterable)
+            iterator = iter(value)
+        except TypeError:
+            raise ObjectNotIterableError(str(self.iterable))
 
         def enter(env: Environment) -> bool:
             try:
                 value = next(iterator)
             except StopIteration:
                 return False
-            if not isinstance(self.vars, tuple):
-                self.vars.assign(value, env)
+            if isinstance(self.vars, tuple):
+                for var, val in zip(self.vars, value):
+                    var.assign(val, env)
                 return True
-            for var, val in zip(self.vars, value):
-                var.assign(val, env)
+            self.vars.assign(value, env)
             return True
 
         def exit(env: Environment) -> BlockResult:

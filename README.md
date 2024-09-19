@@ -13,7 +13,7 @@ from calciumlang.runtime import Runtime
 
 # Calcium code is given as a JSON array.
 calcium_code = [
-  [1, [], "#", "0.0.1"],
+  [1, [], "#", "0.0.2"],
   [1, [], "expr", ["call", ["var", "print"], ["Hello, World."]]],
   [1, [], "end"],
 ]
@@ -25,8 +25,4 @@ r.run()  # outputs 'Hello, World.'
 
 ## Applications using Calcium
 
-With Blockly, [you can generate Calcium code in a visual environment](https://calcium-editor.web.app/en/). This editor produces Calcium code (a JSON array) that can be executed by calcium-py.
-
-## Documentation
-
-[See here](https://calcium-lang.web.app/).
+With Blockly, [you can generate Calcium code in a visual environment](https://capg.app/) (for Japanese and Python syntax). This editor produces Calcium code (a JSON array) that can be executed by the calcium-py runtime.

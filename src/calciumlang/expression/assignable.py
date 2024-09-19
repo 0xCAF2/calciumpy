@@ -1,6 +1,11 @@
 import typing
 from ..environment import Environment
 import abc
+from ..error import (
+    OutOfRangeError,
+    KeyNotContainedError,
+    AssignmentNotSupportedError,
+)
 
 
 class Assignable(abc.ABC):
@@ -22,6 +27,9 @@ class Variable(Assignable):
 
     def evaluate(self, env: Environment) -> typing.Any:
         return env.context.lookup(self.name)
+
+    def __str__(self) -> str:
+        return self.name
 
 
 class Attribute(Assignable):
@@ -48,6 +56,9 @@ class Attribute(Assignable):
             return self.obj.evaluate(env)
         return self.obj
 
+    def __str__(self) -> str:
+        return f'{self.obj}.{".".join(self.properties)}'
+
 
 KeyType = typing.Union[int, str, Assignable]
 KeyIndex = typing.Union[int, Variable]
@@ -73,8 +84,13 @@ class Subscript(Assignable):
         stop: typing.Optional[int] = env.evaluate(self.stop)
 
         if key is not None:
-            obj[key] = value
-            return
+            try:
+                obj[key] = value
+                return
+            except IndexError:
+                raise OutOfRangeError(str(self.ref), str(key))
+            except TypeError:
+                raise AssignmentNotSupportedError(str(self.ref))
         if start is None:
             if stop is None:
                 obj[:] = value
@@ -97,7 +113,12 @@ class Subscript(Assignable):
         stop: typing.Optional[int] = env.evaluate(self.stop)
 
         if key is not None:
-            return obj[key]
+            try:
+                return obj[key]
+            except IndexError:
+                raise OutOfRangeError(str(self.ref), str(key))
+            except KeyError:
+                raise KeyNotContainedError(str(self.ref), str(key))
         if start is None:
             if stop is None:
                 return obj[:]
@@ -108,3 +129,6 @@ class Subscript(Assignable):
                 return obj[start:]
             else:
                 return obj[start:stop]
+
+    def __str__(self) -> str:
+        return f"{self.ref}[{self.key}]"
