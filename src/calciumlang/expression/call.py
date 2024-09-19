@@ -4,6 +4,7 @@ from .assignable import Attribute, Variable
 from ..command.class_stmt import Class
 from ..command.function import Def
 from ..environment import Environment
+from ..error import ObjectNotCallableError
 from ..label import InputCalled
 
 
@@ -62,9 +63,12 @@ class Call:
                 sig = signature(funcobj)
                 if "*args" in str(sig):
                     kwargs["is_called_by_library"] = False
-            self.value = funcobj(*evaluated_args, **kwargs)
-            self.is_returned = True  # built-ins also reach here
-            return self.value
+            try:
+                self.value = funcobj(*evaluated_args, **kwargs)
+                self.is_returned = True  # built-ins also reach here
+                return self.value
+            except TypeError:
+                raise ObjectNotCallableError(str(funcobj))
         if not self.is_returned:
             self.is_returned = True
             self.value = env.returned_value

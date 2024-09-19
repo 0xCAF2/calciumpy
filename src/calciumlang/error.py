@@ -1,56 +1,68 @@
-class AssignmentNotSupportedError(Exception):
-    def __init__(self, message: str, ref: str, key: str):
+class BaseCalciumError(Exception):
+    def __init__(self, message: str):
         super().__init__(message)
-        self.ref = ref
-        self.key = key
 
 
-class InvalidBreakError(Exception):
-    pass
+class AssignmentNotSupportedError(BaseCalciumError):
+    def __init__(self, obj: str):
+        super().__init__(f"cannot assign to {obj}")
+        self.obj = obj
 
 
-class InvalidContinueError(Exception):
-    pass
+class InvalidBreakError(BaseCalciumError):
+    def __init__(self):
+        super().__init__("break statement not within loop")
 
 
-class InvalidModuleNameError(Exception):
-    def __init__(self, message: str, name: str):
-        super().__init__(message)
+class InvalidContinueError(BaseCalciumError):
+    def __init__(self):
+        super().__init__("continue statement not within loop")
+
+
+class InvalidModuleNameError(BaseCalciumError):
+    def __init__(self, name: str):
+        super().__init__(f"module name {name} is invalid")
         self.name = name
 
 
-class InvalidReturnError(Exception):
-    pass
+class InvalidReturnError(BaseCalciumError):
+    def __init__(self):
+        super().__init__("return statement not within function")
 
 
-class KeyNotContainedError(Exception):
-    def __init__(self, message: str, ref: str, key: str, value: str):
-        super().__init__(message)
-        self.ref = ref
+class KeyNotContainedError(BaseCalciumError):
+    def __init__(self, obj: str, key: str):
+        super().__init__(f"key {key} not contained in {obj}")
+        self.obj = obj
         self.key = key
-        self.value = value
 
 
-class NameNotFoundError(Exception):
-    def __init__(self, message: str = "", name: str = ""):
-        super().__init__(message + f" Name {name} is not defined")
+class NameNotFoundError(BaseCalciumError):
+    def __init__(self, name: str):
+        super().__init__(f"Name {name} is not defined")
         self.name = name
 
 
-class ObjectNotIterableError(Exception):
-    def __init__(self, message: str, ref: str, value: str):
-        super().__init__(message)
-        self.ref = ref
-        self.value = value
+class ObjectNotCallableError(BaseCalciumError):
+    def __init__(self, obj: str):
+        super().__init__(f"object {obj} is not callable")
+        self.obj = obj
 
 
-class OperatorNotSupportedError(Exception):
-    pass
+class ObjectNotIterableError(BaseCalciumError):
+    def __init__(self, obj: str):
+        super().__init__(f"object {obj} is not iterable")
+        self.obj = obj
 
 
-class OutOfRangeError(Exception):
-    def __init__(self, message: str, ref: str, index: str, value: str):
-        super().__init__(message)
-        self.ref = ref
+class OperatorNotSupportedError(BaseCalciumError):
+    def __init__(self, op: str):
+        super().__init__(f"operator {op} not supported")
+        self.op = op
+
+
+class OutOfRangeError(BaseCalciumError):
+    def __init__(self, obj: str, index: str):
+        super().__init__(f"index out of range in {obj} at {index}")
+        self.obj = obj
         self.index = index
-        self.value = value

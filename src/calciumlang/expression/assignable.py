@@ -88,18 +88,9 @@ class Subscript(Assignable):
                 obj[key] = value
                 return
             except IndexError:
-                raise OutOfRangeError(
-                    "index out of range",
-                    str(self.ref),
-                    str(self.key),
-                    str(key),
-                )
+                raise OutOfRangeError(str(self.ref), str(key))
             except TypeError:
-                raise AssignmentNotSupportedError(
-                    "cannot assign to the object",
-                    str(self.ref),
-                    str(self.key),
-                )
+                raise AssignmentNotSupportedError(str(self.ref))
         if start is None:
             if stop is None:
                 obj[:] = value
@@ -125,19 +116,9 @@ class Subscript(Assignable):
             try:
                 return obj[key]
             except IndexError:
-                raise OutOfRangeError(
-                    "index out of range",
-                    str(self.ref),
-                    str(self.key),
-                    str(key),
-                )
+                raise OutOfRangeError(str(self.ref), str(key))
             except KeyError:
-                raise KeyNotContainedError(
-                    "key not contained",
-                    str(self.ref),
-                    str(self.key),
-                    str(key),
-                )
+                raise KeyNotContainedError(str(self.ref), str(key))
         if start is None:
             if stop is None:
                 return obj[:]

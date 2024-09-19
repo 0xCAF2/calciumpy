@@ -21,11 +21,7 @@ class For(Command):
             value = env.evaluate(self.iterable)
             iterator = iter(value)
         except TypeError:
-            raise ObjectNotIterableError(
-                "object not iterable",
-                str(self.iterable),
-                value,
-            )
+            raise ObjectNotIterableError(str(self.iterable))
 
         def enter(env: Environment) -> bool:
             try:

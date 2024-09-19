@@ -19,7 +19,7 @@ class Namespace:
             return self.dictobj[name]
         except KeyError:
             if self.parent is None:
-                raise NameNotFoundError(name=name)
+                raise NameNotFoundError(name)
             else:
                 return self.parent.lookup(name)
 
@@ -50,6 +50,6 @@ class GlobalScope(Namespace):
                 else:
                     return getattr(__builtins__, name)
             except KeyError:
-                raise NameNotFoundError(name=name)
+                raise NameNotFoundError(name)
             except:
                 raise
