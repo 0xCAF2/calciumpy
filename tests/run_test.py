@@ -11,7 +11,7 @@ sys.path.append("../src")
 
 from calciumpy.runtime import Runtime
 
-from calciumpy.tools.converter import convert
+from calciumpy.tool.converter import convert
 
 dir_name = None
 file_names = None

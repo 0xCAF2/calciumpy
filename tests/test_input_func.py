@@ -4,7 +4,7 @@ sys.path.append("../src")
 
 from calciumpy.runtime import Runtime, RuntimeResult
 
-from calciumpy.tools.converter import convert
+from calciumpy.tool.converter import convert
 
 import json
 
