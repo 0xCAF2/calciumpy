@@ -3,7 +3,7 @@ import ast
 import json
 import traceback
 
-VERSION = "0.0.3"
+VERSION = "0.1.0"
 
 KEYWORD_COMMENT = "#"
 
@@ -275,9 +275,10 @@ class Python2CalciumVisitor(ast.NodeVisitor):
             keyword = "not"
         elif isinstance(node.op, ast.USub):
             keyword = "-_"
-            if isinstance(node.operand, ast.Num):
+            if isinstance(node.operand, ast.Constant):
                 # Return by a literal with - sign
-                return -node.operand.n
+                if isinstance(node.operand.value, (int, float)):
+                    return -node.operand.value
         elif isinstance(node.op, ast.Invert):
             keyword = "~"
         # if keyword not exist, then error will be raised
