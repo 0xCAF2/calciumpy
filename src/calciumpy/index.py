@@ -45,6 +45,8 @@ class Index:
     KWARG_NAME = 1
     KWARG_VALUE = 2
 
+    NUM_VALUE = 1
+
     LEFT_OPERAND = 1
     RIGHT_OPERAND = 2
 

@@ -6,8 +6,10 @@ from ..error import (
     KeyNotContainedError,
     AssignmentNotSupportedError,
 )
+from dataclasses import dataclass
 
 
+@dataclass(frozen=True)
 class Assignable(abc.ABC):
     @abc.abstractmethod
     def assign(self, value: typing.Any, env: Environment) -> None:

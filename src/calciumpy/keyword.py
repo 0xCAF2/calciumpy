@@ -60,6 +60,10 @@ class Keyword(enum.Enum):
     SUBSCRIPT = "sub"
     CALL = "call"
 
+    DICT = "dict"
+    LIST = "list"
+    NUM = "num"
+
     # syntax
     COMMA = ","
     KWARG = "kwarg"

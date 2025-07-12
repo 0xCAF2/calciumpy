@@ -9,9 +9,9 @@ import sys
 
 sys.path.append("../src")
 
-from calciumlang.runtime import Runtime
+from calciumpy.runtime import Runtime
 
-from calciumlang.tools.converter import convert
+from calciumpy.tool.converter import convert
 
 dir_name = None
 file_names = None
@@ -58,7 +58,7 @@ if __name__ == "__main__":
             filepath = os.path.join(os.getcwd(), dir_name, filename)
         else:
             filepath = os.path.join(os.getcwd(), filename)
-        methodname = "test_{}".format(filename)
+        methodname = f"test_{filename}"
         testcase = type(
             testname, (unittest.TestCase,), {methodname: make_test(filepath)}
         )

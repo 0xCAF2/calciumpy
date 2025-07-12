@@ -2,9 +2,9 @@ import sys
 
 sys.path.append("../src")
 
-from calciumlang.runtime import Runtime, RuntimeResult
+from calciumpy.runtime import Runtime, RuntimeResult
 
-from calciumlang.tools.converter import convert
+from calciumpy.tool.converter import convert
 
 import json
 

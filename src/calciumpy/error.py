@@ -32,7 +32,8 @@ class InvalidReturnError(BaseCalciumError):
 
 class KeyNotContainedError(BaseCalciumError):
     def __init__(self, obj: str, key: str):
-        super().__init__(f"key {key.replace('\n', '\\n')} not contained in {obj}")
+        key = key.replace("\n", "\\n")
+        super().__init__(f"key {key} not contained in {obj}")
         self.obj = obj
         self.key = key
 

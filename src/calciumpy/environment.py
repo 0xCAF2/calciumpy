@@ -44,7 +44,9 @@ class Environment:
         if isinstance(obj, list):
             return [self.evaluate(elem) for elem in obj]
         if isinstance(obj, dict):
-            return {key: self.evaluate(value) for key, value in obj.items()}
+            dict_keys = [self.evaluate(k) for k in obj.keys()]
+            dict_values = [self.evaluate(v) for v in obj.values()]
+            return dict(zip(dict_keys, dict_values))
         if isinstance(obj, tuple):
             return tuple(self.evaluate(elem) for elem in obj)
         if isinstance(obj, set):

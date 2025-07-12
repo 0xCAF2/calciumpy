@@ -48,7 +48,7 @@ class BinaryOperator:
 
         if self.op == Keyword.IN:
             return l in r
-        raise OperatorNotSupportedError(self.op)
+        raise OperatorNotSupportedError(str(self.op))
 
 
 class UnaryOperator:
@@ -62,4 +62,4 @@ class UnaryOperator:
             return -value
         if self.op == Keyword.NOT:
             return not value
-        raise OperatorNotSupportedError(self.op)
+        raise OperatorNotSupportedError(str(self.op))

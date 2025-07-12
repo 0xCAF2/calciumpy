@@ -1,6 +1,7 @@
 from .command import Command
 from ..environment import Environment
 from ..error import InvalidModuleNameError
+import importlib
 
 
 class Import(Command):
@@ -12,6 +13,5 @@ class Import(Command):
         for name in module_names:
             if not name.isalnum():
                 raise InvalidModuleNameError(name)
-        exec(f"import {self.path}")
         module_name = module_names[0]
-        env.context.define(module_name, eval(module_name))
+        env.context.define(module_name, importlib.import_module(module_name))

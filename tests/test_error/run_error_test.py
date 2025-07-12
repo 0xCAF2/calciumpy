@@ -4,7 +4,7 @@ import unittest
 sys.path.append("..")
 sys.path.append("../../src")
 
-from calciumlang.error import (
+from calciumpy.error import (
     OutOfRangeError,
     NameNotFoundError,
     ObjectNotIterableError,

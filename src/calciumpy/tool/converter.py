@@ -3,7 +3,7 @@ import ast
 import json
 import traceback
 
-VERSION = "0.0.3"
+VERSION = "0.1.0"
 
 KEYWORD_COMMENT = "#"
 
@@ -11,7 +11,10 @@ KEYWORD_COMMENT = "#"
 KEYWORD_ATTR = "attr"
 KEYWORD_CALL = "call"
 KEYWORD_COMMA = ","
+KEYWORD_DICT = "dict"
 KEYWORD_KWARG = "kwarg"
+KEYWORD_LIST = "list"
+KEYWORD_NUM = "num"
 KEYWORD_SUBSCRIPT = "sub"
 KEYWORD_TUPLE = "tuple"
 KEYWORD_VAR = "var"
@@ -275,9 +278,10 @@ class Python2CalciumVisitor(ast.NodeVisitor):
             keyword = "not"
         elif isinstance(node.op, ast.USub):
             keyword = "-_"
-            if isinstance(node.operand, ast.Num):
+            if isinstance(node.operand, ast.Constant):
                 # Return by a literal with - sign
-                return -node.operand.n
+                if isinstance(node.operand.value, (int, float)):
+                    return -node.operand.value
         elif isinstance(node.op, ast.Invert):
             keyword = "~"
         # if keyword not exist, then error will be raised
@@ -287,19 +291,21 @@ class Python2CalciumVisitor(ast.NodeVisitor):
 
     def visit_List(self, node):
         # List must be nested
-        return [[self.visit(e) for e in node.elts]]
+        return [KEYWORD_LIST, *[self.visit(e) for e in node.elts]]
 
     def visit_Dict(self, node):
-        obj = {}
+        elems: list[str | list] = [KEYWORD_DICT]
         for k, v in zip(node.keys, node.values):
             if k is not None:
-                obj[self.visit(k)] = self.visit(v)
-        return obj
+                elems.append([self.visit(k), self.visit(v)])
+        return elems
 
     def visit_Num(self, node):
-        return node.n
+        return [KEYWORD_NUM, ast.unparse(node)]
 
     def visit_Constant(self, node):
+        if isinstance(node.value, int) or isinstance(node.value, float):
+            return [KEYWORD_NUM, ast.unparse(node)]
         return node.value
 
     def visit_Str(self, node):
