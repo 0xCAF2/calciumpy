@@ -39,40 +39,55 @@ class Parser:
         return args
 
     def read_expr(self, obj: Element) -> typing.Any:
-        if isinstance(obj, dict):
-            parsed_dict = {}
-            for key, value in obj.items():
-                # key must be str type
-                parsed_dict[key] = self.read_expr(value)
-            return parsed_dict
         if not isinstance(obj, list):
+            # null, true, false
             return obj
-        # when obj is list, it should have at least one element
-        if isinstance(obj[0], list):
-            # a list literal
+        # Some Calcium's expressions have the keyword
+        # in the first element of a list
+        kwd = Keyword(obj[Index.EXPRESSION_KEYWORD])
+        if kwd == Keyword.NUM:
+            value: str = obj[Index.NUM_VALUE]
+            try:
+                return int(value)
+            except ValueError:
+                return float(value)
+
+        if kwd == Keyword.LIST:
             parsed_list = []
-            for elem in obj[0]:
+            for elem in obj[1:]:
                 parsed_list.append(self.read_expr(elem))
             return parsed_list
-        # calcium's expression with keyword in the first element of a list
-        kwd = Keyword(obj[Index.EXPRESSION_KEYWORD])
+
+        if kwd == Keyword.DICT:
+            parsed_dict = {}
+            for k, v in obj[1:]:
+                key = self.read_expr(k)
+                value = self.read_expr(v)
+                parsed_dict[key] = value
+            return parsed_dict
+
         if kwd in (Keyword.VARIABLE, Keyword.ATTRIBUTE, Keyword.SUBSCRIPT):
             return self.read_assignable(obj)
+
         if kwd == Keyword.CALL:
             callee = self.read_assignable(obj[Index.CALL_CALLEE])
             args = self.read_args(obj[Index.CALL_ARGS])
             return Call(callee, args)  # type: ignore
+
         if kwd in (Keyword.TUPLE, Keyword.COMMA):
             return tuple(
                 self.read_expr(elem) for elem in obj[Index.EXPRESSION_KEYWORD + 1 :]
             )
+
         if kwd == Keyword.KWARG:
             return KeywordArgument(
                 obj[Index.KWARG_NAME], self.read_expr(obj[Index.KWARG_VALUE])
             )
+
         if kwd in (Keyword.NOT, Keyword.NEGATIVE):
             operand = self.read_expr(obj[Index.UNARY_OPERAND])
             return UnaryOperator(kwd, operand)
+
         # should be a binary operator
         left = self.read_expr(obj[Index.LEFT_OPERAND])
         right = self.read_expr(obj[Index.RIGHT_OPERAND])
