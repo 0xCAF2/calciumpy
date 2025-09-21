@@ -26,6 +26,9 @@ class Index:
 
     EXPR_STMT = 3
 
+    EXCEPT_TYPE = 3
+    RAISE_VALUE = 3
+
     # expression
     EXPRESSION_KEYWORD = 0
 

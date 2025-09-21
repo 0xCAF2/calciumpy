@@ -52,6 +52,10 @@ class Keyword(enum.Enum):
 
     EXPR_STMT = "expr"
 
+    TRY = "try"
+    EXCEPT = "except"
+    RAISE = "raise"
+
     PASS = "pass"
 
     # expressions
@@ -62,6 +66,7 @@ class Keyword(enum.Enum):
 
     DICT = "dict"
     LIST = "list"
+
     NUM = "num"
 
     # syntax
