@@ -3,7 +3,7 @@ import ast
 import json
 import traceback
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 KEYWORD_COMMENT = "#"
 
@@ -38,7 +38,7 @@ KEYWORD_RETURN = "return"
 KEYWORD_WHILE = "while"
 
 
-class Python2CalciumVisitor(ast.NodeVisitor):
+class CalciumVisitor(ast.NodeVisitor):
     def __init__(self, indent_spaces="    "):
         super().__init__()
         self.lines = []
@@ -290,15 +290,14 @@ class Python2CalciumVisitor(ast.NodeVisitor):
         return elems
 
     def visit_List(self, node):
-        # List must be nested
-        return [KEYWORD_LIST, *[self.visit(e) for e in node.elts]]
+        return [KEYWORD_LIST, [self.visit(e) for e in node.elts]]
 
     def visit_Dict(self, node):
-        elems: list[str | list] = [KEYWORD_DICT]
+        elems: list[list] = []
         for k, v in zip(node.keys, node.values):
             if k is not None:
                 elems.append([self.visit(k), self.visit(v)])
-        return elems
+        return [KEYWORD_DICT, elems]
 
     def visit_Num(self, node):
         return [KEYWORD_NUM, ast.unparse(node)]
@@ -309,7 +308,8 @@ class Python2CalciumVisitor(ast.NodeVisitor):
         return node.value
 
     def visit_Str(self, node):
-        return node.s.replace("\n", "\\n")
+        if isinstance(node.value, str):
+            return node.value.replace("\n", "\\n")
 
     def visit_Name(self, node):
         return [KEYWORD_VAR, node.id]
@@ -374,7 +374,7 @@ class Python2CalciumVisitor(ast.NodeVisitor):
 def convert(src):
     try:
         module_node = ast.parse(src)
-        visitor = Python2CalciumVisitor()
+        visitor = CalciumVisitor()
         visitor.visit(module_node)
         lines = []
         for indent, line in zip(visitor.indents, visitor.lines):

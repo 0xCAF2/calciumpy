@@ -54,13 +54,13 @@ class Parser:
 
         if kwd == Keyword.LIST:
             parsed_list = []
-            for elem in obj[1:]:
+            for elem in obj[1]:
                 parsed_list.append(self.read_expr(elem))
             return parsed_list
 
         if kwd == Keyword.DICT:
             parsed_dict = {}
-            for k, v in obj[1:]:
+            for k, v in obj[1]:
                 key = self.read_expr(k)
                 value = self.read_expr(v)
                 parsed_dict[key] = value
