@@ -67,7 +67,7 @@ class Runtime:
         if self.env.addr.line >= last_index:
             return RuntimeResult.TERMINATED
 
-        line = self.env.code[self.env.addr.line]
+        line = self.env._retrieve_next_line()
         cmd = self.parser.read(line)
 
         caller_addr = self.env.addr.clone()
@@ -89,13 +89,13 @@ class Runtime:
             return RuntimeResult.TERMINATED
 
         self.env.update_addr_to_next_command()
-        next_line = self.env.code[self.env.addr.line]
+        next_line = self.env._retrieve_next_line()
         kwd = Keyword(next_line[Index.KEYWORD])
         while kwd in (Keyword.COMMENT, Keyword.IFS):
             cmd = self.parser.read(next_line)
             cmd.execute(self.env)
             self.env.update_addr_to_next_command()
-            next_line = self.env.code[self.env.addr.line]
+            next_line = self.env._retrieve_next_line()
             kwd = Keyword(next_line[Index.KEYWORD])
 
         if self.env.addr.line in self.breakpoints:

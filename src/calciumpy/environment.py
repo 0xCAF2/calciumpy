@@ -1,4 +1,6 @@
 import typing
+
+from .keyword import Keyword
 from .address import Address
 from .block_result import BlockResult
 from .element import Element
@@ -64,17 +66,56 @@ class Environment:
         self.addr.line = next_line_index
 
     def _pop_blocks(self, line_index: int) -> NextLineCalculation:
-        working_line = line_index
+        working_line_index = line_index
         while True:
-            next_line: list[Element] = self.code[working_line]
+            next_line: list[Element] = self._retrieve_next_line(
+                working_line_index
+            )
             next_indent: int = next_line[Index.INDENT]  # type: ignore
             delta_indent = self.addr.indent - next_indent
             if delta_indent < 0:
-                working_line += 1
+                working_line_index += 1
                 continue
             for _ in range(delta_indent):
                 block = self.blocks[-1]
                 block_result = block.did_exit(self)
                 if block_result == BlockResult.JUMP:
-                    return NextLineCalculation(BlockResult.JUMP, working_line)
-            return NextLineCalculation(BlockResult.SHIFT, working_line)
+                    return NextLineCalculation(
+                        BlockResult.JUMP, working_line_index
+                    )
+            return NextLineCalculation(BlockResult.SHIFT, working_line_index)
+
+    def _retrieve_next_line(
+        self, working_line: int | None = None
+    ) -> list[Element]:
+        if working_line is None:
+            element = self.code[self.addr.line]
+            while True:
+                if (
+                    isinstance(element, list)
+                    and len(element) > 0
+                    and isinstance(element[0], int)
+                ):
+                    return element
+                elif self.addr.line >= len(self.code) - 1:
+                    break
+                else:
+                    self.addr.shift(0, 1)
+                    element = self.code[self.addr.line]
+                    continue
+            return [1, [], Keyword.END.value]
+        element = self.code[working_line]
+        while True:
+            if (
+                isinstance(element, list)
+                and len(element) > 0
+                and isinstance(element[0], int)
+            ):
+                return element
+            elif working_line >= len(self.code) - 1:
+                break
+            else:
+                working_line += 1
+                element = self.code[working_line]
+                continue
+        return [1, [], Keyword.END.value]

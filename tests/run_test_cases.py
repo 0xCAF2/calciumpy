@@ -10,7 +10,6 @@ import sys
 sys.path.append("../src")
 
 from calciumpy.runtime import Runtime
-
 from calciumpy.tool.converter import convert
 
 dir_name = None
