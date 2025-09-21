@@ -3,7 +3,7 @@ import ast
 import json
 import traceback
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 
 KEYWORD_COMMENT = "#"
 
@@ -49,7 +49,9 @@ class CalciumVisitor(ast.NodeVisitor):
         self.indent_offset = len(indent_spaces)
 
     def get_indent(self, node):
-        return node.col_offset // self.indent_offset + 1 + self.count_of_nested_if
+        return (
+            node.col_offset // self.indent_offset + 1 + self.count_of_nested_if
+        )
 
     def output_command(self, indent, keyword, elements=[]):
         self.indents.append(indent)
@@ -77,7 +79,8 @@ class CalciumVisitor(ast.NodeVisitor):
     def output_elif_or_else(self, node, indent):
         if (
             hasattr(node.orelse[0], "test")
-            and node.orelse[0].col_offset == node.col_offset + self.indent_offset
+            and node.orelse[0].col_offset
+            == node.col_offset + self.indent_offset
         ):
             # eg.
             # else:
@@ -254,7 +257,9 @@ class CalciumVisitor(ast.NodeVisitor):
         self.output_command(self.get_indent(node), KEYWORD_CONTINUE)
 
     def visit_Compare(self, node):
-        return self.get_bin_op(node, node.ops[0], node.left, node.comparators[0])
+        return self.get_bin_op(
+            node, node.ops[0], node.left, node.comparators[0]
+        )
 
     def visit_BinOp(self, node):
         return self.get_bin_op(node, node.op, node.left, node.right)

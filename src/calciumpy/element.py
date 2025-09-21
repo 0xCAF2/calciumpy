@@ -1,4 +1,4 @@
 import typing
 
 
-Element = typing.Union[str, int, float, bool, list, dict, None]
+Element = typing.Union[int, str, bool, list, dict, None]
