@@ -48,7 +48,7 @@ class Parser:
         if kwd == Keyword.NUM:
             value: str = obj[Index.NUM_VALUE]
             try:
-                return int(value)
+                return int(value, base=0)
             except ValueError:
                 return float(value)
 
@@ -76,7 +76,8 @@ class Parser:
 
         if kwd in (Keyword.TUPLE, Keyword.COMMA):
             return tuple(
-                self.read_expr(elem) for elem in obj[Index.EXPRESSION_KEYWORD + 1 :]
+                self.read_expr(elem)
+                for elem in obj[Index.EXPRESSION_KEYWORD + 1 :]
             )
 
         if kwd == Keyword.KWARG:
