@@ -22,13 +22,13 @@ class RuntimeResult(enum.Enum):
 
 
 class Runtime:
-    def __init__(self, code: typing.Union[str, list]):
+    def __init__(self, code: typing.Union[str, list], decodes_str=False):
         commands: list
         if isinstance(code, str):
             commands = json.loads(code)
         else:
             commands = code
-        self.env = Environment(commands)
+        self.env = Environment(commands, decodes_str)
         self.breakpoints = set()
         self.parser = Parser()
         self._calls = []
