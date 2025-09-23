@@ -16,7 +16,7 @@ from calciumpy.runtime import Runtime
 
 # Calcium code is given as a JSON array.
 calcium_code = [
-  [1, [], "#", "0.3.0"],
+  [1, [], "#", "0.4.0"],
   [1, [], "expr", ["call", ["var", "print"], ["Hello, World."]]],
   [1, [], "end"],
 ]
