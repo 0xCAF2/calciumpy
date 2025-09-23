@@ -16,22 +16,22 @@ from run_test_cases import run_calcium
 class TestErrors(unittest.TestCase):
     def test_out_of_range(self):
         with self.assertRaises(OutOfRangeError) as context:
-            run_calcium("test_error/out_of_range.py")
+            run_calcium("test_errors/out_of_range.py")
         self.append_message(context)
 
     def test_name_not_found(self):
         with self.assertRaises(NameNotFoundError) as context:
-            run_calcium("test_error/name_not_found.py")
+            run_calcium("test_errors/name_not_found.py")
         self.append_message(context)
 
     def test_object_not_iterable(self):
         with self.assertRaises(ObjectNotIterableError) as context:
-            run_calcium("test_error/object_not_iterable.py")
+            run_calcium("test_errors/object_not_iterable.py")
         self.append_message(context)
 
     def test_object_not_callable(self):
         with self.assertRaises(ObjectNotCallableError) as context:
-            run_calcium("test_error/object_not_callable.py")
+            run_calcium("test_errors/object_not_callable.py")
         self.append_message(context)
 
     def append_message(self, context):

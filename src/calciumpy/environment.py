@@ -1,3 +1,4 @@
+import json
 import typing
 
 from .keyword import Keyword
@@ -15,7 +16,7 @@ class NextLineCalculation:
 
 
 class Environment:
-    def __init__(self, code: list):
+    def __init__(self, code: list, decodes_str=False):
         from .block import Block
 
         self.code: list[list[Element]] = code
@@ -28,6 +29,8 @@ class Environment:
 
         self.prompt = ""
         self.returned_value: typing.Any = None
+
+        self.decodes_str = decodes_str
 
     def evaluate(self, obj: typing.Any) -> typing.Any:
         # to avoid circular imports, these must be written here
@@ -53,6 +56,8 @@ class Environment:
             return tuple(self.evaluate(elem) for elem in obj)
         if isinstance(obj, set):
             return {self.evaluate(elem) for elem in obj}
+        if self.decodes_str and isinstance(obj, str):
+            return json.loads(obj)
         return obj
 
     def update_addr_to_next_command(self) -> None:

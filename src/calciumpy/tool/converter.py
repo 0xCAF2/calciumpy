@@ -3,7 +3,7 @@ import ast
 import json
 import traceback
 
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 
 KEYWORD_COMMENT = "#"
 
