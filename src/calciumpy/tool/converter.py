@@ -2,8 +2,9 @@ import sys
 import ast
 import json
 import traceback
+import typing
 
-VERSION = "0.4.1"
+VERSION = "0.4.2"
 
 KEYWORD_COMMENT = "#"
 
@@ -173,7 +174,7 @@ class CalciumVisitor(ast.NodeVisitor):
             self.visit(stmt)
 
     def visit_ClassDef(self, node):
-        elems: list[str | None] = [node.name]
+        elems: list[typing.Optional[str]] = [node.name]
         if len(node.bases) > 0:
             elems.append(self.visit(node.bases[0]))
         else:
@@ -323,7 +324,7 @@ class CalciumVisitor(ast.NodeVisitor):
         return node.value
 
     def visit_Attribute(self, node):
-        attrs: list[str | list] = [node.attr]
+        attrs: list[typing.Union[str, list]] = [node.attr]
         childnode = node.value
         while isinstance(childnode, ast.Attribute):
             attrs.insert(0, childnode.attr)
@@ -358,7 +359,7 @@ class CalciumVisitor(ast.NodeVisitor):
         return self.output_node(node, KEYWORD_EXPR_STMT, [value])
 
     def visit_Call(self, node):
-        elems: list[str | list] = [KEYWORD_CALL]
+        elems: list[typing.Union[str, list]] = [KEYWORD_CALL]
         func_ref, args = self.get_call(node)
         elems.append(func_ref)
         elems.append(args)
