@@ -91,7 +91,7 @@ class Environment:
             return NextLineCalculation(BlockResult.SHIFT, working_line_index)
 
     def _retrieve_next_line(
-        self, working_line: int | None = None
+        self, working_line: typing.Optional[int] = None
     ) -> list[Element]:
         if working_line is None:
             element = self.code[self.addr.line]
