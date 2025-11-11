@@ -4,7 +4,7 @@ import json
 import traceback
 import typing
 
-VERSION = "0.4.2"
+VERSION = "0.4.3"
 
 KEYWORD_COMMENT = "#"
 
