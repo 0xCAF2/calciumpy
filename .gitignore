@@ -6,3 +6,8 @@ debug_test.py
 
 dist
 pyproject.toml
+
+node_modules
+.DS_Store
+
+cache
