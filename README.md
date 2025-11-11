@@ -2,7 +2,7 @@
 
 A Calcium language interpreter on Python
 
-[Docs](https://0xcaf2.app/calciumpy/)
+[Docs](https://docs.0xcaf2.app/calciumpy/)
 
 ## What is Calcium language?
 
