@@ -9,9 +9,6 @@ hero:
     - theme: brand
       text: Get Started
       link: /guides
-    - theme: alt
-      text: API Reference
-      link: /api
 
 features:
   - title: Command based runtime

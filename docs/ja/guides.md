@@ -9,7 +9,7 @@ pip install calciumpy
 ```
 
 ::: tip
-環境によって、あるいは `pip3` を使う必要があるかもしれません。
+環境によっては `pip3` を使う必要があるかもしれません。
 
 ```bash
 pip3 install calciumpy

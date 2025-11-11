@@ -9,7 +9,6 @@ export default defineConfig({
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guides', link: '/guides' },
-      { text: 'API Reference', link: '/api' }
     ],
 
     sidebar: [
@@ -19,7 +18,6 @@ export default defineConfig({
           { text: 'Get Started', link: '/guides' },
           { text: 'About Commands', link: '/commands' },
           { text: 'Expressions', link: '/expressions' },
-          { text: 'API Reference', link: '/api' }
         ]
       }
     ],
@@ -45,7 +43,6 @@ export default defineConfig({
         nav: [
           { text: 'ホーム', link: '/ja/' },
           { text: 'ガイド', link: '/ja/guides' },
-          { text: 'API リファレンス', link: '/ja/api' }
         ],
 
         sidebar: [
@@ -55,7 +52,6 @@ export default defineConfig({
               { text: 'はじめに', link: '/ja/guides' },
               { text: 'コマンドについて', link: '/ja/commands' },
               { text: '式の表現', link: '/ja/expressions' },
-              { text: 'API リファレンス', link: '/ja/api' }
             ]
           }
         ],

@@ -8,9 +8,6 @@ hero:
     - theme: brand
       text: ガイド
       link: /ja/guides
-    - theme: alt
-      text: API リファレンス
-      link: /ja/api
 
 features:
   - title: コマンド指向の実行環境
