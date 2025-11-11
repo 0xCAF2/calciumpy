@@ -42,7 +42,9 @@ Variable references use the `var` keyword:
 ["var", "my variable"]
 ```
 
+::: tip
 Variable names may contain any characters valid in JSON strings.
+:::
 
 ## Attribute access
 Object attribute access uses the `attr` keyword:

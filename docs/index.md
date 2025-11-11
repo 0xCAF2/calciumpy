@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: calciumpy
-  text: An interpreter to "run" JSON in Python.
+  text: An interpreter that lets you "run" JSON in Python.
   actions:
     - theme: brand
       text: Get Started
@@ -14,11 +14,11 @@ hero:
       link: /api
 
 features:
-  - title: Command based Runtime
+  - title: Command based runtime
     details: Each line is a command represented in a JSON array.
-  - title: Python Interoperability
+  - title: Python interoperability
     details: Python's built-in functions and more can be used.
-  - title: Code Generation Friendly
+  - title: Code generation friendly
     details: Integrating with Blockly, commands can be generated.
 ---
 

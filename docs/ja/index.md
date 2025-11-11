@@ -22,6 +22,7 @@ features:
 ---
 
 ## Blockly で生成した JSON を calciumpy で実行する
-[カルシウム エディタ](https://caed.app/) は、[Blockly](https://developers.google.com/blockly) を使ってビジュアルプログラミングで
+[カルシウム エディタ](https://caed.app/) は、
+[Blockly](https://developers.google.com/blockly) を使ってビジュアルプログラミングで
 コードを作成し、calciumpy で実行する Web アプリケーションです。
 [Pyodide](https://pyodide.org/en/stable/) と組み合わせてブラウザ上で動作します。

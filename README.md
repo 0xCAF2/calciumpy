@@ -1,15 +1,15 @@
 # calciumpy
 
-A Calcium language interpreter on Python
+Run JSON like code in Python.
 
 [Docs](https://docs.0xcaf2.app/calciumpy/)
 
-## What is Calcium language?
+## About Calcium language
 
 Calcium is a programming language that takes a JSON array as input.
-It is interoperable with the Python language,
+*calciumpy* is interoperable with the Python language,
 allowing you to utilize Python's standard libraries and more.
-Calcium is primarily designed as a subset of Python.
+It is primarily designed as a subset of Python.
 
 ## How to create the interpreter and run code
 
