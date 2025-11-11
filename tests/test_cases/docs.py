@@ -1,2 +1,8 @@
 message = "Hello, World."
 print(message)
+
+x = 73
+if x % 2 == 0:
+    print("x is even.")
+else:
+    print("x is odd.")

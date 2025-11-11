@@ -17,6 +17,8 @@ export default defineConfig({
         text: 'Contents',
         items: [
           { text: 'Get Started', link: '/guides' },
+          { text: 'About Commands', link: '/commands' },
+          { text: 'Expressions', link: '/expressions' },
           { text: 'API Reference', link: '/api' }
         ]
       }
@@ -51,6 +53,8 @@ export default defineConfig({
             text: '目次',
             items: [
               { text: 'はじめに', link: '/ja/guides' },
+              { text: 'コマンドについて', link: '/ja/commands' },
+              { text: '式の表現', link: '/ja/expressions' },
               { text: 'API リファレンス', link: '/ja/api' }
             ]
           }
