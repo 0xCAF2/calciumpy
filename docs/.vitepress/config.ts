@@ -24,6 +24,39 @@ export default defineConfig({
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/0xCAF2/calciumpy' }
-    ]
-  }
+    ],
+
+    externalLinkIcon: true,
+  },
+  locales: {
+    root: {
+      label: "English",
+      lang: "en",
+    },
+    ja: {
+      label: "日本語",
+      lang: "ja",
+      title: "calciumpy | インタプリタ",
+      description:
+        "JSONを解釈して「実行」するための Python ライブラリです。",
+      themeConfig: {
+        nav: [
+          { text: 'ホーム', link: '/ja/' },
+          { text: 'ガイド', link: '/ja/guides' },
+          { text: 'API リファレンス', link: '/ja/api' }
+        ],
+
+        sidebar: [
+          {
+            text: '目次',
+            items: [
+              { text: 'はじめに', link: '/ja/guides' },
+              { text: 'API リファレンス', link: '/ja/api' }
+            ]
+          }
+        ],
+      },
+    },
+  },
+  base: "/calciumpy/",
 })

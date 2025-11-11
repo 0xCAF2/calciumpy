@@ -3,8 +3,8 @@
 layout: home
 
 hero:
-  name: "calciumpy"
-  text: "An interpreter to run JSON in Python."
+  name: calciumpy
+  text: An interpreter to "run" JSON in Python.
   actions:
     - theme: brand
       text: Get Started
@@ -14,11 +14,16 @@ hero:
       link: /api
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Command based Runtime
+    details: Each line is a command represented in a JSON array.
+  - title: Python Interoperability
+    details: Python's built-in functions and more can be used.
+  - title: Code Generation Friendly
+    details: Integrating with Blockly, commands can be generated.
 ---
 
+## Applications of calciumpy
+[Calcium Editor](https://caed.app/) is a web application that allows you to
+create code using visual programming with
+[Blockly](https://developers.google.com/blockly) and execute it with calciumpy
+and [Pyodide](https://pyodide.org/en/stable/).
