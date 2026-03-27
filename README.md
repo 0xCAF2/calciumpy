@@ -2,7 +2,7 @@
 
 Run JSON like code in Python.
 
-[Docs](https://docs.0xcaf2.app/calciumpy/)
+[Docs](https://0xcaf2.dev/docs/calcium)
 
 ## About Calcium language
 
