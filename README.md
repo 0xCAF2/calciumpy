@@ -1,5 +1,9 @@
 # calciumpy
 
+**Deprecated**: This project is no longer maintained.
+
+----
+
 Run JSON like code in Python.
 
 ## How to install
@@ -16,7 +20,7 @@ pip3 install calciumpy
 
 ## About Calcium language
 
-[Calcium is a programming language](https://0xcaf2.dev/docs/calcium)
+[Calcium is a programming language](https://calcium.0xcaf2.dev/)
 that takes a JSON array as input.
 *calciumpy* is interoperable with the Python language,
 allowing you to utilize Python's standard libraries and more.
